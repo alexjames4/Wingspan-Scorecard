@@ -1,0 +1,167 @@
+<div class="table-wrap">
+  <table class="scorecard-table">
+    <thead>
+      <tr>
+        <th class="label-col sticky-col">Category</th>
+        @for (player of players(); track player.id) {
+          <th class="player-col" [class.leading]="isLeading(player)">
+            <div class="player-name">{{ player.name }}</div>
+            @if (isLeading(player)) {
+              <span class="crown" title="Leading">👑</span>
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Bird Points -->
+      <tr>
+        <td class="label-col sticky-col">
+          <span class="row-icon">🐦</span> Bird Points
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="score-cell">
+            <input
+              type="number"
+              min="0"
+              [value]="player.score.birdPoints"
+              (input)="onInput(player.id, 'birdPoints', $event)"
+              aria-label="Bird points for {{ player.name }}"
+            />
+          </td>
+        }
+      </tr>
+
+      <!-- Bonus Cards -->
+      <tr>
+        <td class="label-col sticky-col">
+          <span class="row-icon">🎁</span> Bonus Cards
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="score-cell">
+            <input
+              type="number"
+              min="0"
+              [value]="player.score.bonusCards"
+              (input)="onInput(player.id, 'bonusCards', $event)"
+              aria-label="Bonus cards for {{ player.name }}"
+            />
+          </td>
+        }
+      </tr>
+
+      <!-- End-of-Round Goals -->
+      @for (i of rounds; track i) {
+        <tr [class.first-round]="i === 0">
+          <td class="label-col sticky-col round-label">
+            @if (i === 0) {
+              <span class="row-icon">🎯</span>
+            } @else {
+              <span class="row-icon indent"></span>
+            }
+            Round {{ i + 1 }} Goals
+          </td>
+          @for (player of players(); track player.id) {
+            <td class="score-cell">
+              <input
+                type="number"
+                min="0"
+                [value]="player.score.endOfRoundGoals[i]"
+                (input)="onRoundInput(player.id, i, $event)"
+                aria-label="Round {{ i + 1 }} goals for {{ player.name }}"
+              />
+            </td>
+          }
+        </tr>
+      }
+
+      <!-- Eggs -->
+      <tr class="section-start">
+        <td class="label-col sticky-col">
+          <span class="row-icon">🥚</span> Eggs
+          <small class="hint">×1 pt</small>
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="score-cell">
+            <input
+              type="number"
+              min="0"
+              [value]="player.score.eggs"
+              (input)="onInput(player.id, 'eggs', $event)"
+              aria-label="Eggs for {{ player.name }}"
+            />
+          </td>
+        }
+      </tr>
+
+      <!-- Cached Food -->
+      <tr>
+        <td class="label-col sticky-col">
+          <span class="row-icon">🌾</span> Cached Food
+          <small class="hint">×1 pt</small>
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="score-cell">
+            <input
+              type="number"
+              min="0"
+              [value]="player.score.cachedFood"
+              (input)="onInput(player.id, 'cachedFood', $event)"
+              aria-label="Cached food for {{ player.name }}"
+            />
+          </td>
+        }
+      </tr>
+
+      <!-- Tucked Cards -->
+      <tr>
+        <td class="label-col sticky-col">
+          <span class="row-icon">📄</span> Tucked Cards
+          <small class="hint">×1 pt</small>
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="score-cell">
+            <input
+              type="number"
+              min="0"
+              [value]="player.score.tuckedCards"
+              (input)="onInput(player.id, 'tuckedCards', $event)"
+              aria-label="Tucked cards for {{ player.name }}"
+            />
+          </td>
+        }
+      </tr>
+
+      <!-- Total -->
+      <tr class="total-row">
+        <td class="label-col sticky-col total-label">
+          <strong>TOTAL</strong>
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="total-cell" [class.leading]="isLeading(player)">
+            <strong>{{ getTotal(player) }}</strong>
+          </td>
+        }
+      </tr>
+
+      <!-- Tiebreaker -->
+      <tr class="tiebreaker-row">
+        <td class="label-col sticky-col">
+          <span class="row-icon">🍄</span> Unused Food
+          <small class="hint">tiebreaker</small>
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="score-cell">
+            <input
+              type="number"
+              min="0"
+              [value]="player.score.unusedFood"
+              (input)="onInput(player.id, 'unusedFood', $event)"
+              aria-label="Unused food for {{ player.name }}"
+            />
+          </td>
+        }
+      </tr>
+    </tbody>
+  </table>
+</div>

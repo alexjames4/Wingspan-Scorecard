@@ -1,0 +1,103 @@
+import { Injectable, signal, computed } from '@angular/core';
+import { Player, PlayerScore, createDefaultScore, calculateTotal } from '../models/player.model';
+
+const STORAGE_KEY = 'wingspan_scorecard_v1';
+
+@Injectable({ providedIn: 'root' })
+export class ScoreService {
+  private readonly _players = signal<Player[]>(this.loadFromStorage());
+
+  readonly players = this._players.asReadonly();
+
+  readonly sortedPlayers = computed(() =>
+    [...this._players()].sort((a, b) => {
+      const diff = this.getTotal(b.score) - this.getTotal(a.score);
+      return diff !== 0 ? diff : b.score.unusedFood - a.score.unusedFood;
+    })
+  );
+
+  addPlayer(name: string): boolean {
+    if (this._players().length >= 5) return false;
+    const trimmed = name.trim();
+    this._players.update(ps => [
+      ...ps,
+      {
+        id: crypto.randomUUID(),
+        name: trimmed || `Player ${ps.length + 1}`,
+        score: createDefaultScore(),
+      },
+    ]);
+    this.save();
+    return true;
+  }
+
+  removePlayer(id: string): void {
+    this._players.update(ps => ps.filter(p => p.id !== id));
+    this.save();
+  }
+
+  renamePlayer(id: string, name: string): void {
+    this._players.update(ps =>
+      ps.map(p => (p.id === id ? { ...p, name: name.trim() || p.name } : p))
+    );
+    this.save();
+  }
+
+  updateScore(
+    playerId: string,
+    field: keyof Omit<PlayerScore, 'endOfRoundGoals'>,
+    value: number
+  ): void {
+    this._players.update(ps =>
+      ps.map(p =>
+        p.id === playerId
+          ? { ...p, score: { ...p.score, [field]: Math.max(0, value) } }
+          : p
+      )
+    );
+    this.save();
+  }
+
+  updateRoundGoal(playerId: string, roundIndex: number, value: number): void {
+    this._players.update(ps =>
+      ps.map(p => {
+        if (p.id !== playerId) return p;
+        const goals = [...p.score.endOfRoundGoals] as [number, number, number, number];
+        goals[roundIndex] = Math.max(0, value);
+        return { ...p, score: { ...p.score, endOfRoundGoals: goals } };
+      })
+    );
+    this.save();
+  }
+
+  getTotal(score: PlayerScore): number {
+    return calculateTotal(score);
+  }
+
+  resetScores(): void {
+    this._players.update(ps => ps.map(p => ({ ...p, score: createDefaultScore() })));
+    this.save();
+  }
+
+  clearAll(): void {
+    this._players.set([]);
+    this.save();
+  }
+
+  private save(): void {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this._players()));
+    } catch { /* storage quota */ }
+  }
+
+  private loadFromStorage(): Player[] {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw) as Player[];
+      return Array.isArray(parsed) ? parsed.filter(p => p?.id && p?.name && p?.score) : [];
+    } catch {
+      return [];
+    }
+  }
+}
