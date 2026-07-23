@@ -65,14 +65,12 @@ export class ScoreService {
   }
 
   updateNectarScore(playerId: string, habitatIndex: number, value: number): void {
+    if (habitatIndex < 0 || habitatIndex >= TOTAL_NECTAR_HABITATS) return;
+
     this._players.update(ps =>
       ps.map(p => {
         if (p.id !== playerId) return p;
-        const nectar: [number, number, number] = [
-          p.score.nectar[0],
-          p.score.nectar[1],
-          p.score.nectar[2],
-        ];
+        const nectar: [number, number, number] = [...p.score.nectar];
         nectar[habitatIndex] = Math.max(0, value);
         return { ...p, score: { ...p.score, nectar } };
       })

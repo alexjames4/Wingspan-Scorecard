@@ -46,6 +46,9 @@ describe('ScorecardComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
+    const birdPointsInput = compiled.querySelector(
+      'input[aria-label="Bird points for Alice"]'
+    ) as HTMLInputElement;
     const forestInput = compiled.querySelector(
       'input[aria-label="Forest nectar for Alice"]'
     ) as HTMLInputElement;
@@ -59,6 +62,7 @@ describe('ScorecardComponent', () => {
       'input[aria-label="Total nectar for Alice"]'
     ) as HTMLInputElement;
 
+    setInputValue(birdPointsInput, 4);
     setInputValue(forestInput, 1);
     setInputValue(grasslandInput, 2);
     setInputValue(wetlandInput, 3);
@@ -66,6 +70,6 @@ describe('ScorecardComponent', () => {
 
     expect(totalNectarInput.readOnly).toBe(true);
     expect(totalNectarInput.value).toBe('6');
-    expect(compiled.querySelector('.total-row .total-cell')?.textContent).toContain('6');
+    expect(compiled.querySelector('.total-row .total-cell strong')?.textContent?.trim()).toBe('10');
   });
 });
