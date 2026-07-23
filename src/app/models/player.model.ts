@@ -9,6 +9,7 @@ export interface PlayerScore {
   tuckedCards: number;
   nectar: NectarScores;
   duetGroup: number;
+  hummingbirds: number;
   unusedFood: number;
 }
 
@@ -30,6 +31,7 @@ export function createDefaultScore(): PlayerScore {
     tuckedCards: 0,
     nectar: [0, 0, 0],
     duetGroup: 0,
+    hummingbirds: 0,
     unusedFood: 0,
   };
 }
@@ -47,6 +49,7 @@ export function calculateTotal(score: PlayerScore): number {
     score.cachedFood +
     score.tuckedCards +
     calculateNectarTotal(score) +
-    score.duetGroup
+    score.duetGroup +
+    score.hummingbirds
   );
 }

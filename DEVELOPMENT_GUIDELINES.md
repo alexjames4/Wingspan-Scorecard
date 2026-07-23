@@ -40,6 +40,13 @@ When the Asia Expansion is selected:
 - Users can enter the Duet Group point value for each player
 - This value is included in the overall total points scoring calculation
 
+### Americas Expansion - Hummingbirds Row
+
+When the Americas Expansion is selected:
+- A "Hummingbirds" row is added to the scorecard
+- Users can enter the Hummingbirds point value for each player
+- This value is included in the overall total points scoring calculation
+
 ## Styling & Theming
 
 ### Current Theme
