@@ -1,0 +1,90 @@
+<div class="app-bg">
+  <!-- Header -->
+  <header class="app-header">
+    <h1 class="brand-title">WINGSPAN</h1>
+    <p class="brand-subtitle">Scorecard</p>
+  </header>
+
+  <main class="app-main">
+    <!-- Player Setup Panel -->
+    <section class="setup-panel card">
+      <div class="setup-header">
+        <h2 class="setup-title">Players</h2>
+        <span class="player-count">{{ players().length }} / 5</span>
+      </div>
+
+      <!-- Existing players list -->
+      @if (players().length > 0) {
+        <ul class="player-list">
+          @for (player of players(); track player.id) {
+            <li class="player-item">
+              <span class="player-icon">🐦</span>
+              <span class="player-name">{{ player.name }}</span>
+              <button
+                class="btn-icon remove-btn"
+                (click)="removePlayer(player.id)"
+                [attr.aria-label]="'Remove ' + player.name"
+                title="Remove player"
+              >✕</button>
+            </li>
+          }
+        </ul>
+      }
+
+      <!-- Add player input -->
+      @if (canAddPlayer()) {
+        <div class="add-player-row">
+          <input
+            class="name-input"
+            type="text"
+            placeholder="Player name…"
+            maxlength="20"
+            [value]="newPlayerName()"
+            (input)="newPlayerName.set($any($event.target).value)"
+            (keydown)="onNameKeydown($event)"
+            aria-label="New player name"
+          />
+          <button class="btn btn-primary" (click)="addPlayer()">+ Add</button>
+        </div>
+      }
+    </section>
+
+    <!-- Scorecard -->
+    @if (hasPlayers()) {
+      <section class="scorecard-section">
+        <app-scorecard />
+      </section>
+
+      <!-- Actions -->
+      <div class="actions">
+        @if (!showResetConfirm()) {
+          <button class="btn btn-outline" (click)="showResetConfirm.set(true)">
+            🔄 Reset Scores
+          </button>
+        } @else {
+          <div class="confirm-row">
+            <span class="confirm-text">Reset all scores?</span>
+            <button class="btn btn-danger" (click)="resetScores()">Yes, reset</button>
+            <button class="btn btn-outline" (click)="showResetConfirm.set(false)">Cancel</button>
+          </div>
+        }
+
+        @if (!showClearConfirm()) {
+          <button class="btn btn-outline danger-outline" (click)="showClearConfirm.set(true)">
+            🗑 New Game
+          </button>
+        } @else {
+          <div class="confirm-row">
+            <span class="confirm-text">Clear all players and scores?</span>
+            <button class="btn btn-danger" (click)="clearAll()">Yes, clear all</button>
+            <button class="btn btn-outline" (click)="showClearConfirm.set(false)">Cancel</button>
+          </div>
+        }
+      </div>
+    }
+  </main>
+
+  <footer class="app-footer">
+    <p>Wingspan base game scoring · Scores saved locally</p>
+  </footer>
+</div>
