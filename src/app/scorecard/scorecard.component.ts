@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ScoreService } from '../services/score.service';
-import { Player, PlayerScore } from '../models/player.model';
+import { Player, ScoreField, calculateNectarTotal } from '../models/player.model';
 
 @Component({
   selector: 'app-scorecard',
@@ -11,7 +11,10 @@ import { Player, PlayerScore } from '../models/player.model';
 export class ScorecardComponent {
   protected readonly scoreService = inject(ScoreService);
   protected readonly players = this.scoreService.players;
+  protected readonly selectedExpansions = this.scoreService.selectedExpansions;
   protected readonly rounds = [0, 1, 2, 3] as const;
+  protected readonly nectarHabitats = ['Forest', 'Grassland', 'Wetland'] as const;
+  protected readonly showNectarRow = computed(() => this.selectedExpansions().includes('oceania'));
 
   protected getTotal(player: Player): number {
     return this.scoreService.getTotal(player.score);
@@ -33,11 +36,11 @@ export class ScorecardComponent {
     return player.score.endOfRoundGoals.reduce((sum, val) => sum + val, 0);
   }
 
-  protected onInput(
-    playerId: string,
-    field: keyof Omit<PlayerScore, 'endOfRoundGoals'>,
-    event: Event
-  ): void {
+  protected getNectarTotal(player: Player): number {
+    return calculateNectarTotal(player.score);
+  }
+
+  protected onInput(playerId: string, field: ScoreField, event: Event): void {
     const value = +(event.target as HTMLInputElement).value || 0;
     this.scoreService.updateScore(playerId, field, value);
   }
@@ -45,5 +48,10 @@ export class ScorecardComponent {
   protected onEndOfRoundGoalsInput(playerId: string, event: Event): void {
     const total = +(event.target as HTMLInputElement).value || 0;
     this.scoreService.updateTotalEndOfRoundGoals(playerId, total);
+  }
+
+  protected onNectarInput(playerId: string, habitatIndex: number, event: Event): void {
+    const value = +(event.target as HTMLInputElement).value || 0;
+    this.scoreService.updateNectarScore(playerId, habitatIndex, value);
   }
 }

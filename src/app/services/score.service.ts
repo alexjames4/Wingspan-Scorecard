@@ -1,10 +1,18 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { Player, PlayerScore, createDefaultScore, calculateTotal } from '../models/player.model';
+import {
+  NectarScores,
+  Player,
+  PlayerScore,
+  ScoreField,
+  createDefaultScore,
+  calculateTotal,
+} from '../models/player.model';
 import { EXPANSIONS } from '../models/expansion.model';
 
 const STORAGE_KEY = 'wingspan_scorecard_v1';
 const EXPANSIONS_STORAGE_KEY = 'wingspan_expansions_v1';
 const TOTAL_ROUNDS = 4;
+const TOTAL_NECTAR_HABITATS = 3;
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService {
@@ -50,7 +58,7 @@ export class ScoreService {
 
   updateScore(
     playerId: string,
-    field: keyof Omit<PlayerScore, 'endOfRoundGoals'>,
+    field: ScoreField,
     value: number
   ): void {
     this._players.update(ps =>
@@ -59,6 +67,20 @@ export class ScoreService {
           ? { ...p, score: { ...p.score, [field]: Math.max(0, value) } }
           : p
       )
+    );
+    this.save();
+  }
+
+  updateNectarScore(playerId: string, habitatIndex: number, value: number): void {
+    if (habitatIndex < 0 || habitatIndex >= TOTAL_NECTAR_HABITATS) return;
+
+    this._players.update(ps =>
+      ps.map(p => {
+        if (p.id !== playerId) return p;
+        const nectar = [...p.score.nectar] as NectarScores;
+        nectar[habitatIndex] = Math.max(0, value);
+        return { ...p, score: { ...p.score, nectar } };
+      })
     );
     this.save();
   }
@@ -135,10 +157,40 @@ export class ScoreService {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return [];
       const parsed = JSON.parse(raw) as Player[];
-      return Array.isArray(parsed) ? parsed.filter(p => p?.id && p?.name && p?.score) : [];
+      return Array.isArray(parsed)
+        ? parsed
+            .filter(p => p?.id && p?.name && p?.score)
+            .map(player => this.normalizePlayer(player))
+        : [];
     } catch {
       return [];
     }
+  }
+
+  private normalizePlayer(player: Player): Player {
+    const defaultScore = createDefaultScore();
+    const rawGoals = Array.isArray(player.score.endOfRoundGoals)
+      ? player.score.endOfRoundGoals
+      : defaultScore.endOfRoundGoals;
+    const rawNectar = Array.isArray(player.score.nectar) ? player.score.nectar : defaultScore.nectar;
+
+    return {
+      ...player,
+      score: {
+        ...defaultScore,
+        ...player.score,
+        endOfRoundGoals: Array.from({ length: TOTAL_ROUNDS }, (_, index) => rawGoals[index] ?? 0) as [
+          number,
+          number,
+          number,
+          number,
+        ],
+        nectar: Array.from(
+          { length: TOTAL_NECTAR_HABITATS },
+          (_, index) => rawNectar[index] ?? 0
+        ) as NectarScores,
+      },
+    };
   }
 
   private loadExpansionsFromStorage(): string[] {
