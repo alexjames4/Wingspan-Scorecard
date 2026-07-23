@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { ScoreService } from '../services/score.service';
 import { ScorecardComponent } from './scorecard.component';
 
+const EXPANSIONS_STORAGE_KEY = 'wingspan_expansions_v1';
+
 function setInputValue(input: HTMLInputElement, value: number): void {
   input.value = String(value);
   input.dispatchEvent(new Event('input'));
@@ -17,9 +19,10 @@ describe('ScorecardComponent', () => {
   });
 
   it('shows the nectar row only when Oceania expansion is selected', () => {
+    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['base']));
+
     const scoreService = TestBed.inject(ScoreService);
     scoreService.addPlayer('Alice');
-    scoreService.toggleExpansion('oceania');
 
     const fixture = TestBed.createComponent(ScorecardComponent);
     fixture.detectChanges();
@@ -34,6 +37,8 @@ describe('ScorecardComponent', () => {
   });
 
   it('updates nectar totals and includes them in the grand total', () => {
+    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['base', 'oceania']));
+
     const scoreService = TestBed.inject(ScoreService);
     scoreService.addPlayer('Alice');
 
