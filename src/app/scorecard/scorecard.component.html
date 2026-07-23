@@ -182,6 +182,25 @@
         </tr>
       }
 
+      @if (showHummingbirdsRow()) {
+        <tr>
+          <td class="label-col sticky-col">
+            <span class="row-icon">🐦</span> Hummingbirds
+          </td>
+          @for (player of players(); track player.id) {
+            <td class="score-cell">
+              <input
+                type="number"
+                min="0"
+                [value]="player.score.hummingbirds"
+                (input)="onInput(player.id, 'hummingbirds', $event)"
+                aria-label="Hummingbirds for {{ player.name }}"
+              />
+            </td>
+          }
+        </tr>
+      }
+
       <!-- Total -->
       <tr class="total-row">
         <td class="label-col sticky-col total-label">
