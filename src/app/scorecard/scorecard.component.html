@@ -51,29 +51,22 @@
       </tr>
 
       <!-- End-of-Round Goals -->
-      @for (i of rounds; track i) {
-        <tr [class.first-round]="i === 0">
-          <td class="label-col sticky-col round-label">
-            @if (i === 0) {
-              <span class="row-icon">🎯</span>
-            } @else {
-              <span class="row-icon indent"></span>
-            }
-            Round {{ i + 1 }} Goals
+      <tr>
+        <td class="label-col sticky-col">
+          <span class="row-icon">🎯</span> End of Round Goals
+        </td>
+        @for (player of players(); track player.id) {
+          <td class="score-cell">
+            <input
+              type="number"
+              min="0"
+              [value]="getTotalEndOfRoundGoals(player)"
+              (input)="onEndOfRoundGoalsInput(player.id, $event)"
+              aria-label="End of round goals for {{ player.name }}"
+            />
           </td>
-          @for (player of players(); track player.id) {
-            <td class="score-cell">
-              <input
-                type="number"
-                min="0"
-                [value]="player.score.endOfRoundGoals[i]"
-                (input)="onRoundInput(player.id, i, $event)"
-                aria-label="Round {{ i + 1 }} goals for {{ player.name }}"
-              />
-            </td>
-          }
-        </tr>
-      }
+        }
+      </tr>
 
       <!-- Eggs -->
       <tr class="section-start">
