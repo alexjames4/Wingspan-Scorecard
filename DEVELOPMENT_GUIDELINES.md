@@ -24,6 +24,15 @@ The app supports multiple Wingspan expansions that users can select from:
 - The selection is stored in localStorage and persists across sessions
 - Future PRs will handle how selections affect the scorecard content
 
+### Oceania Expansion - Nectar Row
+
+When the Oceania Expansion is selected:
+- A "Nectar" row is added to the scorecard
+- Instead of a single cell entry, the Nectar row contains 3 separate entries (one for each habitat)
+- The individual habitat entries allow users to enter nectar values for each habitat
+- A read-only total cell displays the sum of the three habitat nectar values
+- This total is used in the overall total points scoring calculation
+
 ## Styling & Theming
 
 ### Current Theme
