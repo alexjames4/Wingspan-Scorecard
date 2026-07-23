@@ -25,6 +25,14 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
+      - run: rm -rf public/* && cp -r dist/wingspan-scorecard/browser/* public/
+      - name: Commit and push built files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/
+          git commit -m "Deploy: update built app files" || true
+          git push
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/wingspan-scorecard/browser
