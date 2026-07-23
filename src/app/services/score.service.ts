@@ -68,7 +68,11 @@ export class ScoreService {
     this._players.update(ps =>
       ps.map(p => {
         if (p.id !== playerId) return p;
-        const nectar = [...p.score.nectar] as [number, number, number];
+        const nectar: [number, number, number] = [
+          p.score.nectar[0],
+          p.score.nectar[1],
+          p.score.nectar[2],
+        ];
         nectar[habitatIndex] = Math.max(0, value);
         return { ...p, score: { ...p.score, nectar } };
       })

@@ -19,17 +19,18 @@ describe('ScorecardComponent', () => {
   it('shows the nectar row only when Oceania expansion is selected', () => {
     const scoreService = TestBed.inject(ScoreService);
     scoreService.addPlayer('Alice');
+    scoreService.toggleExpansion('oceania');
 
     const fixture = TestBed.createComponent(ScorecardComponent);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Nectar');
+    expect(compiled.textContent).not.toContain('Nectar');
 
     scoreService.toggleExpansion('oceania');
     fixture.detectChanges();
 
-    expect(compiled.textContent).not.toContain('Nectar');
+    expect(compiled.textContent).toContain('Nectar');
   });
 
   it('updates nectar totals and includes them in the grand total', () => {
