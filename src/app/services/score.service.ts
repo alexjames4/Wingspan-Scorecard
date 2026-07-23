@@ -1,13 +1,17 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Player, PlayerScore, createDefaultScore, calculateTotal } from '../models/player.model';
+import { EXPANSIONS } from '../models/expansion.model';
 
 const STORAGE_KEY = 'wingspan_scorecard_v1';
+const EXPANSIONS_STORAGE_KEY = 'wingspan_expansions_v1';
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService {
   private readonly _players = signal<Player[]>(this.loadFromStorage());
+  private readonly _selectedExpansions = signal<string[]>(this.loadExpansionsFromStorage());
 
   readonly players = this._players.asReadonly();
+  readonly selectedExpansions = this._selectedExpansions.asReadonly();
 
   readonly sortedPlayers = computed(() =>
     [...this._players()].sort((a, b) => {
@@ -84,9 +88,24 @@ export class ScoreService {
     this.save();
   }
 
+  toggleExpansion(expansionId: string): void {
+    this._selectedExpansions.update(current =>
+      current.includes(expansionId)
+        ? current.filter(id => id !== expansionId)
+        : [...current, expansionId]
+    );
+    this.saveExpansions();
+  }
+
   private save(): void {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this._players()));
+    } catch { /* storage quota */ }
+  }
+
+  private saveExpansions(): void {
+    try {
+      localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(this._selectedExpansions()));
     } catch { /* storage quota */ }
   }
 
@@ -98,6 +117,20 @@ export class ScoreService {
       return Array.isArray(parsed) ? parsed.filter(p => p?.id && p?.name && p?.score) : [];
     } catch {
       return [];
+    }
+  }
+
+  private loadExpansionsFromStorage(): string[] {
+    try {
+      const raw = localStorage.getItem(EXPANSIONS_STORAGE_KEY);
+      if (!raw) {
+        // Default: all expansions selected
+        return EXPANSIONS.map(e => e.id);
+      }
+      const parsed = JSON.parse(raw) as string[];
+      return Array.isArray(parsed) ? parsed : EXPANSIONS.map(e => e.id);
+    } catch {
+      return EXPANSIONS.map(e => e.id);
     }
   }
 }

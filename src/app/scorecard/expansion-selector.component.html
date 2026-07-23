@@ -1,0 +1,16 @@
+<section class="expansions-section card">
+  <h2 class="expansions-title">Select Expansions</h2>
+  <div class="expansions-container">
+    @for (expansion of expansions; track expansion.id) {
+      <label class="expansion-checkbox">
+        <input
+          type="checkbox"
+          [checked]="isSelected(expansion.id)"
+          (change)="toggleExpansion(expansion.id)"
+          [attr.aria-label]="'Select ' + expansion.label"
+        />
+        <span class="checkbox-label">{{ expansion.label }}</span>
+      </label>
+    }
+  </div>
+</section>
