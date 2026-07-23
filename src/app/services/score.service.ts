@@ -1,5 +1,12 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { Player, PlayerScore, ScoreField, createDefaultScore, calculateTotal } from '../models/player.model';
+import {
+  NectarScores,
+  Player,
+  PlayerScore,
+  ScoreField,
+  createDefaultScore,
+  calculateTotal,
+} from '../models/player.model';
 import { EXPANSIONS } from '../models/expansion.model';
 
 const STORAGE_KEY = 'wingspan_scorecard_v1';
@@ -70,7 +77,7 @@ export class ScoreService {
     this._players.update(ps =>
       ps.map(p => {
         if (p.id !== playerId) return p;
-        const nectar: [number, number, number] = [...p.score.nectar];
+        const nectar = [...p.score.nectar] as NectarScores;
         nectar[habitatIndex] = Math.max(0, value);
         return { ...p, score: { ...p.score, nectar } };
       })
@@ -181,7 +188,7 @@ export class ScoreService {
         nectar: Array.from(
           { length: TOTAL_NECTAR_HABITATS },
           (_, index) => rawNectar[index] ?? 0
-        ) as [number, number, number],
+        ) as NectarScores,
       },
     };
   }

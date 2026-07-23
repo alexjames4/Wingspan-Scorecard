@@ -1,3 +1,5 @@
+export type NectarScores = [number, number, number];
+
 export interface PlayerScore {
   birdPoints: number;
   bonusCards: number;
@@ -5,7 +7,7 @@ export interface PlayerScore {
   eggs: number;
   cachedFood: number;
   tuckedCards: number;
-  nectar: [number, number, number];
+  nectar: NectarScores;
   unusedFood: number;
 }
 
