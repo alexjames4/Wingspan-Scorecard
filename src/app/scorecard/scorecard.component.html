@@ -154,7 +154,7 @@
                     [value]="getNectarTotal(player)"
                     readonly
                     tabindex="-1"
-                    aria-label="Total nectar for {{ player.name }}"
+                    [attr.aria-label]="'Total nectar for ' + player.name"
                   />
                 </label>
               </div>
