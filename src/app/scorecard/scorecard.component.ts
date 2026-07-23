@@ -46,9 +46,4 @@ export class ScorecardComponent {
     const total = +(event.target as HTMLInputElement).value || 0;
     this.scoreService.updateTotalEndOfRoundGoals(playerId, total);
   }
-
-  protected onRoundInput(playerId: string, roundIndex: number, event: Event): void {
-    const value = +(event.target as HTMLInputElement).value || 0;
-    this.scoreService.updateRoundGoal(playerId, roundIndex, value);
-  }
 }

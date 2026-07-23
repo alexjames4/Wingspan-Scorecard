@@ -65,14 +65,14 @@ export class ScoreService {
 
   updateTotalEndOfRoundGoals(playerId: string, total: number): void {
     const validTotal = Math.max(0, total);
-    // Distribute equally across rounds, with remainder points going to later rounds
+    // Distribute equally across rounds, with remainder points going to first rounds
     const perRound = Math.floor(validTotal / TOTAL_ROUNDS);
     const remainder = validTotal % TOTAL_ROUNDS;
     const goals: [number, number, number, number] = [
-      perRound,
-      perRound + (remainder >= 3 ? 1 : 0),
-      perRound + (remainder >= 2 ? 1 : 0),
       perRound + (remainder >= 1 ? 1 : 0),
+      perRound + (remainder >= 2 ? 1 : 0),
+      perRound + (remainder >= 3 ? 1 : 0),
+      perRound,
     ];
     this._players.update(ps =>
       ps.map(p => {
