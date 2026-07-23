@@ -15,6 +15,7 @@ export class ScorecardComponent {
   protected readonly rounds = [0, 1, 2, 3] as const;
   protected readonly nectarHabitats = ['Forest', 'Grassland', 'Wetland'] as const;
   protected readonly showNectarRow = computed(() => this.selectedExpansions().includes('oceania'));
+  protected readonly showDuetGroupRow = computed(() => this.selectedExpansions().includes('asia'));
 
   protected getTotal(player: Player): number {
     return this.scoreService.getTotal(player.score);

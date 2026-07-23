@@ -33,6 +33,13 @@ When the Oceania Expansion is selected:
 - A read-only total cell displays the sum of the three habitat nectar values
 - This total is used in the overall total points scoring calculation
 
+### Asia Expansion - Duet Group Row
+
+When the Asia Expansion is selected:
+- A "Duet Group" row is added to the scorecard
+- Users can enter the Duet Group point value for each player
+- This value is included in the overall total points scoring calculation
+
 ## Styling & Theming
 
 ### Current Theme
