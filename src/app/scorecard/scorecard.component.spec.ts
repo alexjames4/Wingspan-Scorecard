@@ -1,0 +1,65 @@
+import { TestBed } from '@angular/core/testing';
+import { ScoreService } from '../services/score.service';
+import { ScorecardComponent } from './scorecard.component';
+
+function setInputValue(input: HTMLInputElement, value: number): void {
+  input.value = String(value);
+  input.dispatchEvent(new Event('input'));
+}
+
+describe('ScorecardComponent', () => {
+  beforeEach(async () => {
+    localStorage.clear();
+
+    await TestBed.configureTestingModule({
+      imports: [ScorecardComponent],
+    }).compileComponents();
+  });
+
+  it('shows the nectar row only when Oceania expansion is selected', () => {
+    const scoreService = TestBed.inject(ScoreService);
+    scoreService.addPlayer('Alice');
+
+    const fixture = TestBed.createComponent(ScorecardComponent);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain('Nectar');
+
+    scoreService.toggleExpansion('oceania');
+    fixture.detectChanges();
+
+    expect(compiled.textContent).not.toContain('Nectar');
+  });
+
+  it('updates nectar totals and includes them in the grand total', () => {
+    const scoreService = TestBed.inject(ScoreService);
+    scoreService.addPlayer('Alice');
+
+    const fixture = TestBed.createComponent(ScorecardComponent);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const forestInput = compiled.querySelector(
+      'input[aria-label="Forest nectar for Alice"]'
+    ) as HTMLInputElement;
+    const grasslandInput = compiled.querySelector(
+      'input[aria-label="Grassland nectar for Alice"]'
+    ) as HTMLInputElement;
+    const wetlandInput = compiled.querySelector(
+      'input[aria-label="Wetland nectar for Alice"]'
+    ) as HTMLInputElement;
+    const totalNectarInput = compiled.querySelector(
+      'input[aria-label="Total nectar for Alice"]'
+    ) as HTMLInputElement;
+
+    setInputValue(forestInput, 1);
+    setInputValue(grasslandInput, 2);
+    setInputValue(wetlandInput, 3);
+    fixture.detectChanges();
+
+    expect(totalNectarInput.readOnly).toBe(true);
+    expect(totalNectarInput.value).toBe('6');
+    expect(compiled.querySelector('.total-row .total-cell')?.textContent).toContain('6');
+  });
+});

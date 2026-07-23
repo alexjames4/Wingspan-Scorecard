@@ -125,6 +125,44 @@
         }
       </tr>
 
+      @if (showNectarRow()) {
+        <tr>
+          <td class="label-col sticky-col">
+            <span class="row-icon">🍯</span> Nectar
+            <small class="hint">per habitat</small>
+          </td>
+          @for (player of players(); track player.id) {
+            <td class="score-cell nectar-cell">
+              <div class="nectar-inputs">
+                @for (habitat of nectarHabitats; track habitat; let habitatIndex = $index) {
+                  <label class="nectar-entry">
+                    <span class="nectar-label">{{ habitat }}</span>
+                    <input
+                      type="number"
+                      min="0"
+                      [value]="player.score.nectar[habitatIndex]"
+                      (input)="onNectarInput(player.id, habitatIndex, $event)"
+                      [attr.aria-label]="habitat + ' nectar for ' + player.name"
+                    />
+                  </label>
+                }
+
+                <label class="nectar-entry">
+                  <span class="nectar-label">Total</span>
+                  <input
+                    type="number"
+                    [value]="getNectarTotal(player)"
+                    readonly
+                    tabindex="-1"
+                    aria-label="Total nectar for {{ player.name }}"
+                  />
+                </label>
+              </div>
+            </td>
+          }
+        </tr>
+      }
+
       <!-- Total -->
       <tr class="total-row">
         <td class="label-col sticky-col total-label">
