@@ -70,9 +70,9 @@ export class ScoreService {
     const remainder = validTotal % TOTAL_ROUNDS;
     const goals: [number, number, number, number] = [
       perRound,
-      perRound + (remainder > 2 ? 1 : 0),
-      perRound + (remainder > 1 ? 1 : 0),
-      perRound + (remainder > 0 ? 1 : 0),
+      perRound + (remainder >= 3 ? 1 : 0),
+      perRound + (remainder >= 2 ? 1 : 0),
+      perRound + (remainder >= 1 ? 1 : 0),
     ];
     this._players.update(ps =>
       ps.map(p => {
