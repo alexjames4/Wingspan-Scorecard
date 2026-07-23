@@ -29,6 +29,10 @@ export class ScorecardComponent {
     return player.score.unusedFood === maxUnused;
   }
 
+  protected getTotalEndOfRoundGoals(player: Player): number {
+    return player.score.endOfRoundGoals.reduce((sum, val) => sum + val, 0);
+  }
+
   protected onInput(
     playerId: string,
     field: keyof Omit<PlayerScore, 'endOfRoundGoals'>,
@@ -36,6 +40,11 @@ export class ScorecardComponent {
   ): void {
     const value = +(event.target as HTMLInputElement).value || 0;
     this.scoreService.updateScore(playerId, field, value);
+  }
+
+  protected onEndOfRoundGoalsInput(playerId: string, event: Event): void {
+    const total = +(event.target as HTMLInputElement).value || 0;
+    this.scoreService.updateTotalEndOfRoundGoals(playerId, total);
   }
 
   protected onRoundInput(playerId: string, roundIndex: number, event: Event): void {

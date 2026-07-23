@@ -62,6 +62,26 @@ export class ScoreService {
     this.save();
   }
 
+  updateTotalEndOfRoundGoals(playerId: string, total: number): void {
+    const validTotal = Math.max(0, total);
+    // Distribute equally across 4 rounds
+    const perRound = Math.floor(validTotal / 4);
+    const remainder = validTotal % 4;
+    const goals: [number, number, number, number] = [
+      perRound + (remainder > 0 ? 1 : 0),
+      perRound + (remainder > 1 ? 1 : 0),
+      perRound + (remainder > 2 ? 1 : 0),
+      perRound,
+    ];
+    this._players.update(ps =>
+      ps.map(p => {
+        if (p.id !== playerId) return p;
+        return { ...p, score: { ...p.score, endOfRoundGoals: goals } };
+      })
+    );
+    this.save();
+  }
+
   updateRoundGoal(playerId: string, roundIndex: number, value: number): void {
     this._players.update(ps =>
       ps.map(p => {
