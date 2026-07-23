@@ -163,6 +163,25 @@
         </tr>
       }
 
+      @if (showDuetGroupRow()) {
+        <tr>
+          <td class="label-col sticky-col">
+            <span class="row-icon">🎭</span> Duet Group
+          </td>
+          @for (player of players(); track player.id) {
+            <td class="score-cell">
+              <input
+                type="number"
+                min="0"
+                [value]="player.score.duetGroup"
+                (input)="onInput(player.id, 'duetGroup', $event)"
+                aria-label="Duet group for {{ player.name }}"
+              />
+            </td>
+          }
+        </tr>
+      }
+
       <!-- Total -->
       <tr class="total-row">
         <td class="label-col sticky-col total-label">

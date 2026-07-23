@@ -8,6 +8,7 @@ export interface PlayerScore {
   cachedFood: number;
   tuckedCards: number;
   nectar: NectarScores;
+  duetGroup: number;
   unusedFood: number;
 }
 
@@ -28,6 +29,7 @@ export function createDefaultScore(): PlayerScore {
     cachedFood: 0,
     tuckedCards: 0,
     nectar: [0, 0, 0],
+    duetGroup: 0,
     unusedFood: 0,
   };
 }
@@ -44,6 +46,7 @@ export function calculateTotal(score: PlayerScore): number {
     score.eggs +
     score.cachedFood +
     score.tuckedCards +
-    calculateNectarTotal(score)
+    calculateNectarTotal(score) +
+    score.duetGroup
   );
 }
