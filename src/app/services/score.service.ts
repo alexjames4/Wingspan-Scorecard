@@ -4,6 +4,7 @@ import { EXPANSIONS } from '../models/expansion.model';
 
 const STORAGE_KEY = 'wingspan_scorecard_v1';
 const EXPANSIONS_STORAGE_KEY = 'wingspan_expansions_v1';
+const TOTAL_ROUNDS = 4;
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService {
@@ -64,9 +65,9 @@ export class ScoreService {
 
   updateTotalEndOfRoundGoals(playerId: string, total: number): void {
     const validTotal = Math.max(0, total);
-    // Distribute equally across 4 rounds
-    const perRound = Math.floor(validTotal / 4);
-    const remainder = validTotal % 4;
+    // Distribute equally across rounds
+    const perRound = Math.floor(validTotal / TOTAL_ROUNDS);
+    const remainder = validTotal % TOTAL_ROUNDS;
     const goals: [number, number, number, number] = [
       perRound + (remainder > 0 ? 1 : 0),
       perRound + (remainder > 1 ? 1 : 0),
