@@ -2,10 +2,11 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ScoreService } from './services/score.service';
 import { ScorecardComponent } from './scorecard/scorecard.component';
+import { ExpansionSelectorComponent } from './scorecard/expansion-selector.component';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, ScorecardComponent],
+  imports: [FormsModule, ScorecardComponent, ExpansionSelectorComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

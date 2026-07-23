@@ -1,0 +1,43 @@
+.expansions-section {
+  .expansions-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c6e8a;
+    margin: 0 0 16px;
+    letter-spacing: 0.05em;
+  }
+}
+
+.expansions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.expansion-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+
+  input[type='checkbox'] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #2c6e8a;
+  }
+
+  .checkbox-label {
+    font-size: 0.9rem;
+    color: #1e3a4a;
+    font-weight: 500;
+  }
+
+  &:hover {
+    .checkbox-label {
+      color: #2c6e8a;
+    }
+  }
+}
