@@ -28,10 +28,22 @@ The app supports multiple Wingspan expansions that users can select from:
 
 When the Oceania Expansion is selected:
 - A "Nectar" row is added to the scorecard
-- Instead of a single cell entry, the Nectar row contains 3 separate entries (one for each habitat)
-- The individual habitat entries allow users to enter nectar values for each habitat
-- A read-only total cell displays the sum of the three habitat nectar values
-- This total is used in the overall total points scoring calculation
+- The Nectar row contains 3 separate editable entries (one for each habitat: Forest, Grassland, Wetland)
+- Users can enter nectar values for each habitat
+
+**Nectar Competition Scoring:**
+- Each habitat is its own competition among all players
+- Players are ranked by their nectar value in each habitat
+- Scoring is based on ranking:
+  - 1st place: 5 points
+  - 2nd place: 2 points
+  - 3rd place or lower: 0 points
+- In case of a tie (draw):
+  - Joint 1st place: 3 points each
+  - Joint 2nd place: 1 point each
+- The read-only score displays the competition points for each habitat and the total (e.g., "5 + 2 + 0 = 7")
+- The read-only score is displayed as text, not an input box
+- The total nectar competition points are included in the overall total points scoring calculation
 
 ### Asia Expansion - Duet Group Row
 

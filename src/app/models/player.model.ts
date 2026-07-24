@@ -1,4 +1,5 @@
 export type NectarScores = [number, number, number];
+export type NectarCompetitionPoints = [number, number, number];
 
 export interface PlayerScore {
   birdPoints: number;
@@ -8,6 +9,7 @@ export interface PlayerScore {
   cachedFood: number;
   tuckedCards: number;
   nectar: NectarScores;
+  nectarCompetitionPoints: NectarCompetitionPoints;
   duetGroup: number;
   hummingbirds: number;
   unusedFood: number;
@@ -30,6 +32,7 @@ export function createDefaultScore(): PlayerScore {
     cachedFood: 0,
     tuckedCards: 0,
     nectar: [0, 0, 0],
+    nectarCompetitionPoints: createEmptyNectarCompetitionPoints(),
     duetGroup: 0,
     hummingbirds: 0,
     unusedFood: 0,
@@ -40,6 +43,14 @@ export function calculateNectarTotal(score: PlayerScore): number {
   return score.nectar.reduce((a, b) => a + b, 0);
 }
 
+export function calculateNectarCompetitionTotal(nectarCompetitionPoints: NectarCompetitionPoints): number {
+  return nectarCompetitionPoints.reduce((a, b) => a + b, 0);
+}
+
+export function createEmptyNectarCompetitionPoints(): NectarCompetitionPoints {
+  return [0, 0, 0];
+}
+
 export function calculateTotal(score: PlayerScore): number {
   return (
     score.birdPoints +
@@ -48,7 +59,7 @@ export function calculateTotal(score: PlayerScore): number {
     score.eggs +
     score.cachedFood +
     score.tuckedCards +
-    calculateNectarTotal(score) +
+    calculateNectarCompetitionTotal(score.nectarCompetitionPoints) +
     score.duetGroup +
     score.hummingbirds
   );

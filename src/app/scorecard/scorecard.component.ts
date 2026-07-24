@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { ScoreService } from '../services/score.service';
-import { Player, ScoreField, calculateNectarTotal } from '../models/player.model';
+import { Player, ScoreField, calculateNectarCompetitionTotal } from '../models/player.model';
 
 @Component({
   selector: 'app-scorecard',
@@ -39,7 +39,13 @@ export class ScorecardComponent {
   }
 
   protected getNectarTotal(player: Player): number {
-    return calculateNectarTotal(player.score);
+    return calculateNectarCompetitionTotal(player.score.nectarCompetitionPoints);
+  }
+
+  protected getNectarCompetitionPoints(player: Player): string {
+    const points = player.score.nectarCompetitionPoints;
+    const pointsList = Array.from(points).map(String).join(' + ');
+    return `${pointsList} = ${calculateNectarCompetitionTotal(player.score.nectarCompetitionPoints)}`;
   }
 
   protected onInput(playerId: string, field: ScoreField, event: Event): void {

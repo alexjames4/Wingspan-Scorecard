@@ -200,6 +200,21 @@ thead .sticky-col {
       font-weight: 700;
     }
   }
+
+  .nectar-score-display {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px 0;
+  }
+
+  .nectar-score-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e3a4a;
+    text-align: left;
+    word-break: break-word;
+  }
 }
 
 .total-cell {

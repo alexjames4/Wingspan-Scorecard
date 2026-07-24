@@ -1,10 +1,12 @@
 import { Injectable, signal, computed } from '@angular/core';
 import {
   NectarScores,
+  NectarCompetitionPoints,
   Player,
   PlayerScore,
   ScoreField,
   createDefaultScore,
+  createEmptyNectarCompetitionPoints,
   calculateTotal,
 } from '../models/player.model';
 import { EXPANSIONS } from '../models/expansion.model';
@@ -82,6 +84,9 @@ export class ScoreService {
         return { ...p, score: { ...p.score, nectar } };
       })
     );
+
+    // Recalculate nectar competition points for all players
+    this._calculateAndUpdateNectarCompetitionPoints();
     this.save();
   }
 
@@ -146,6 +151,74 @@ export class ScoreService {
     } catch { /* storage quota */ }
   }
 
+  private _calculateAndUpdateNectarCompetitionPoints(): void {
+    this._players.update(ps => {
+      // For each habitat, calculate points
+      const habitatPoints: NectarCompetitionPoints[] = ps.map(() => createEmptyNectarCompetitionPoints());
+
+      for (let habitatIndex = 0; habitatIndex < TOTAL_NECTAR_HABITATS; habitatIndex++) {
+        // Get all players with their nectar values for this habitat
+        const habitatScores = ps.map((p, pIndex) => ({
+          playerIndex: pIndex,
+          nectarValue: p.score.nectar[habitatIndex],
+        }));
+
+        // Sort by nectar value descending
+        habitatScores.sort((a, b) => b.nectarValue - a.nectarValue);
+
+        // Award points based on ranking
+        let currentRank = 1;
+        let i = 0;
+
+        while (i < habitatScores.length) {
+          const currentValue = habitatScores[i].nectarValue;
+
+          // Skip if no nectar in this habitat
+          if (currentValue === 0) {
+            break;
+          }
+
+          // Find all players with the same nectar value (tied)
+          const tiedPlayers: typeof habitatScores = [];
+          let j = i;
+          while (j < habitatScores.length && habitatScores[j].nectarValue === currentValue) {
+            tiedPlayers.push(habitatScores[j]);
+            j++;
+          }
+
+          // Award points based on position and number of ties
+          const points = this._calculateTiePoints(currentRank, tiedPlayers.length);
+
+          for (const player of tiedPlayers) {
+            habitatPoints[player.playerIndex][habitatIndex] = points;
+          }
+
+          currentRank += tiedPlayers.length;
+          i = j;
+        }
+      }
+
+      // Update all players with their competition points
+      return ps.map((p, index) => ({
+        ...p,
+        score: { ...p.score, nectarCompetitionPoints: habitatPoints[index] },
+      }));
+    });
+  }
+
+  private _calculateTiePoints(rank: number, tiedCount: number): number {
+    if (rank === 1) {
+      // Joint 1st place
+      return tiedCount > 1 ? 3 : 5;
+    } else if (rank === 2) {
+      // Joint 2nd place
+      return tiedCount > 1 ? 1 : 2;
+    } else {
+      // 3rd place or lower
+      return 0;
+    }
+  }
+
   private saveExpansions(): void {
     try {
       localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(this._selectedExpansions()));
@@ -173,6 +246,9 @@ export class ScoreService {
       ? player.score.endOfRoundGoals
       : defaultScore.endOfRoundGoals;
     const rawNectar = Array.isArray(player.score.nectar) ? player.score.nectar : defaultScore.nectar;
+    const rawNectarCompetitionPoints = Array.isArray(player.score.nectarCompetitionPoints)
+      ? player.score.nectarCompetitionPoints
+      : defaultScore.nectarCompetitionPoints;
 
     return {
       ...player,
@@ -189,6 +265,10 @@ export class ScoreService {
           { length: TOTAL_NECTAR_HABITATS },
           (_, index) => rawNectar[index] ?? 0
         ) as NectarScores,
+        nectarCompetitionPoints: Array.from(
+          { length: TOTAL_NECTAR_HABITATS },
+          (_, index) => rawNectarCompetitionPoints[index] ?? 0
+        ) as NectarCompetitionPoints,
       },
     };
   }
