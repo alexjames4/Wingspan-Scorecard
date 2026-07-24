@@ -149,7 +149,7 @@
 
                 <div class="nectar-score-display">
                   <span class="nectar-label">Score</span>
-                  <div class="nectar-score-text">{{ getNectarCompetitionPoints(player) }}</div>
+                  <div class="nectar-score-text" [attr.data-testid]="'nectar-score-' + player.id">{{ getNectarCompetitionPoints(player) }}</div>
                 </div>
               </div>
             </td>

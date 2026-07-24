@@ -65,7 +65,12 @@ describe('ScorecardComponent', () => {
     setInputValue(wetlandInput, 3);
     fixture.detectChanges();
 
-    const nectarScoreDisplay = compiled.querySelector('.nectar-score-text') as HTMLElement;
+    // Get player from service to check competition points
+    const players = scoreService.players();
+    const alice = players[0];
+    expect(alice.score.nectarCompetitionPoints).toEqual([5, 5, 5]);
+
+    const nectarScoreDisplay = compiled.querySelector('[data-testid="nectar-score-' + alice.id + '"]') as HTMLElement;
     expect(nectarScoreDisplay).toBeTruthy();
     expect(nectarScoreDisplay?.textContent).toContain('5 + 5 + 5 = 15');
     expect(compiled.querySelector('.total-row .total-cell strong')?.textContent?.trim()).toBe('19');
@@ -99,26 +104,28 @@ describe('ScorecardComponent', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
 
-    // Get nectar score displays by their corresponding players
-    const aliceNectarDisplay = compiled.querySelector(
-      'input[aria-label="Forest nectar for Alice"]'
-    )?.closest('.nectar-cell')?.querySelector('.nectar-score-text') as HTMLElement;
-
-    const bobNectarDisplay = compiled.querySelector(
-      'input[aria-label="Forest nectar for Bob"]'
-    )?.closest('.nectar-cell')?.querySelector('.nectar-score-text') as HTMLElement;
-
-    const charlieNectarDisplay = compiled.querySelector(
-      'input[aria-label="Forest nectar for Charlie"]'
-    )?.closest('.nectar-cell')?.querySelector('.nectar-score-text') as HTMLElement;
+    // Verify competition points are calculated correctly
+    const updatedPlayers = scoreService.players();
+    const updatedAlice = updatedPlayers[0];
+    const updatedBob = updatedPlayers[1];
+    const updatedCharlie = updatedPlayers[2];
 
     // Alice: Forest 3 (tied 1st) + Grassland 0 (no nectar) + Wetland 0 = 3
-    expect(aliceNectarDisplay?.textContent).toContain('3 + 0 + 0 = 3');
+    expect(updatedAlice.score.nectarCompetitionPoints).toEqual([3, 0, 0]);
 
     // Bob: Forest 3 (tied 1st) + Grassland 0 (no nectar) + Wetland 0 = 3
-    expect(bobNectarDisplay?.textContent).toContain('3 + 0 + 0 = 3');
+    expect(updatedBob.score.nectarCompetitionPoints).toEqual([3, 0, 0]);
 
     // Charlie: Forest 0 (rank 3, no points) + Grassland 5 (1st place) + Wetland 0 = 5
+    expect(updatedCharlie.score.nectarCompetitionPoints).toEqual([0, 5, 0]);
+
+    // Verify display strings match
+    const aliceNectarDisplay = compiled.querySelector('[data-testid="nectar-score-' + updatedAlice.id + '"]') as HTMLElement;
+    const bobNectarDisplay = compiled.querySelector('[data-testid="nectar-score-' + updatedBob.id + '"]') as HTMLElement;
+    const charlieNectarDisplay = compiled.querySelector('[data-testid="nectar-score-' + updatedCharlie.id + '"]') as HTMLElement;
+
+    expect(aliceNectarDisplay?.textContent).toContain('3 + 0 + 0 = 3');
+    expect(bobNectarDisplay?.textContent).toContain('3 + 0 + 0 = 3');
     expect(charlieNectarDisplay?.textContent).toContain('0 + 5 + 0 = 5');
   });
 });
