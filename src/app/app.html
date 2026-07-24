@@ -92,7 +92,7 @@
             class="btn btn-fullscreen" 
             (click)="toggleFullscreen()"
             [attr.aria-label]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
-            [title]="isFullscreen() ? 'Exit fullscreen (⛵)' : 'Enter fullscreen (⛶)'"
+            [title]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
           >
             @if (isFullscreen()) {
               <span class="fullscreen-icon exit-icon">⛵</span>

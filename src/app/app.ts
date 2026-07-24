@@ -24,6 +24,7 @@ export class App {
   protected isFullscreen = signal(this.loadFullscreenPreference());
 
   constructor() {
+    // Automatically persist fullscreen preference to localStorage whenever it changes
     effect(() => {
       this.saveFullscreenPreference(this.isFullscreen());
     });
