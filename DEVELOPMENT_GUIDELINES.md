@@ -36,11 +36,9 @@ This ensures code review and maintains a clear history of all changes in the rep
 ### Available Expansions
 
 The app supports multiple Wingspan expansions that users can select from:
-- Base game
-- European Expansion
-- Oceania Expansion
-- Asia Expansion
-- Americas Expansion
+- Nectar (formerly Oceania Expansion)
+- Duet (formerly Asia Expansion)
+- Hummingbirds (formerly Americas Expansion)
 
 ### Expansion Selection
 
@@ -49,9 +47,9 @@ The app supports multiple Wingspan expansions that users can select from:
 - The selection is stored in localStorage and persists across sessions
 - Future PRs will handle how selections affect the scorecard content
 
-### Oceania Expansion - Nectar Row
+### Nectar - Nectar Row
 
-When the Oceania Expansion is selected:
+When the Nectar expansion is selected:
 - A "Nectar" row is added to the scorecard
 - The Nectar row contains 3 separate editable entries (one for each habitat: Forest, Grassland, Wetland)
 - Users can enter nectar values for each habitat

@@ -14,9 +14,9 @@ export class ScorecardComponent {
   protected readonly selectedExpansions = this.scoreService.selectedExpansions;
   protected readonly rounds = [0, 1, 2, 3] as const;
   protected readonly nectarHabitats = ['Forest', 'Grassland', 'Wetland'] as const;
-  protected readonly showNectarRow = computed(() => this.selectedExpansions().includes('oceania'));
-  protected readonly showDuetGroupRow = computed(() => this.selectedExpansions().includes('asia'));
-  protected readonly showHummingbirdsRow = computed(() => this.selectedExpansions().includes('americas'));
+  protected readonly showNectarRow = computed(() => this.selectedExpansions().includes('nectar'));
+  protected readonly showDuetGroupRow = computed(() => this.selectedExpansions().includes('duet'));
+  protected readonly showHummingbirdsRow = computed(() => this.selectedExpansions().includes('hummingbirds'));
 
   protected getTotal(player: Player): number {
     return this.scoreService.getTotal(player.score);

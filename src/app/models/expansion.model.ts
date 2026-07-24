@@ -4,9 +4,7 @@ export interface Expansion {
 }
 
 export const EXPANSIONS: Expansion[] = [
-  { id: 'base', label: 'Base game' },
-  { id: 'european', label: 'European Expansion' },
-  { id: 'oceania', label: 'Oceania Expansion' },
-  { id: 'asia', label: 'Asia Expansion' },
-  { id: 'americas', label: 'Americas Expansion' },
+  { id: 'nectar', label: 'Nectar' },
+  { id: 'duet', label: 'Duet' },
+  { id: 'hummingbirds', label: 'Hummingbirds' },
 ];

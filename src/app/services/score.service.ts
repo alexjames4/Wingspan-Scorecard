@@ -313,7 +313,30 @@ export class ScoreService {
         return EXPANSIONS.map(e => e.id);
       }
       const parsed = JSON.parse(raw) as string[];
-      return Array.isArray(parsed) ? parsed : EXPANSIONS.map(e => e.id);
+      const validIds = EXPANSIONS.map(e => e.id);
+      
+      // Migration map for old IDs to new IDs (null = removed)
+      const migrationMap: Record<string, string | null> = {
+        'base': null,
+        'european': null,
+        'oceania': 'nectar',
+        'asia': 'duet',
+        'americas': 'hummingbirds',
+      };
+      
+      // Track if any removed expansions (base or european) were present in saved data
+      const hadRemovedExpansions = parsed.some(id => migrationMap[id] === null);
+      
+      // Migrate old IDs to new ones for backward compatibility
+      const migrated = parsed.map(id => migrationMap[id] ?? id);
+      
+      // Filter out null values and invalid IDs
+      const filtered = migrated.filter((id): id is string => id !== null && validIds.includes(id));
+      
+      // Restore defaults only if user had only removed expansions selected,
+      // otherwise preserve their selection (even if empty)
+      const shouldRestoreDefaults = filtered.length === 0 && hadRemovedExpansions;
+      return shouldRestoreDefaults ? EXPANSIONS.map(e => e.id) : filtered;
     } catch {
       return EXPANSIONS.map(e => e.id);
     }
