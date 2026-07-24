@@ -21,6 +21,11 @@ export class App {
   protected showResetConfirm = signal(false);
   protected showClearConfirm = signal(false);
   protected colorPickerPlayerId = signal<string | null>(null);
+  protected isFullscreen = signal(false);
+
+  constructor() {
+    this.isFullscreen.set(this.loadFullscreenPreference());
+  }
 
   protected addPlayer(): void {
     this.scoreService.addPlayer(this.newPlayerName());
@@ -55,5 +60,20 @@ export class App {
   protected openColorPicker(playerId: string, event: Event): void {
     event.stopPropagation();
     this.colorPickerPlayerId.set(this.colorPickerPlayerId() === playerId ? null : playerId);
+  }
+
+  protected toggleFullscreen(): void {
+    this.isFullscreen.set(!this.isFullscreen());
+    this.saveFullscreenPreference(this.isFullscreen());
+  }
+
+  private loadFullscreenPreference(): boolean {
+    if (typeof localStorage === 'undefined') return false;
+    return localStorage.getItem('wingspan_fullscreen') === 'true';
+  }
+
+  private saveFullscreenPreference(value: boolean): void {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem('wingspan_fullscreen', value ? 'true' : 'false');
   }
 }
