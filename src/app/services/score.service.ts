@@ -293,10 +293,10 @@ export class ScoreService {
       };
       
       // Track if any removed expansions were present
-      const hadRemovedExpansions = parsed.some(id => Object.hasOwn(migrationMap, id) && migrationMap[id] === null);
+      const hadRemovedExpansions = parsed.some(id => migrationMap[id] === null);
       
       // Migrate old IDs to new ones for backward compatibility
-      const migrated = parsed.map(id => Object.hasOwn(migrationMap, id) ? migrationMap[id] : id);
+      const migrated = parsed.map(id => migrationMap[id] ?? id);
       
       // Filter out null values and invalid IDs
       const filtered = migrated.filter((id): id is string => id !== null && validIds.includes(id));
