@@ -286,24 +286,17 @@ export class ScoreService {
       // Track if any removed expansions were present
       const hadRemovedExpansions = parsed.some(id => id === 'base' || id === 'european');
       
+      // Migration map for old IDs to new IDs (null = removed)
+      const migrationMap: Record<string, string | null> = {
+        'base': null,
+        'european': null,
+        'oceania': 'nectar',
+        'asia': 'duet',
+        'americas': 'hummingbirds',
+      };
+      
       // Migrate old IDs to new ones for backward compatibility
-      const migrated = parsed.map(id => {
-        switch (id) {
-          // Old expansion IDs (removed)
-          case 'base':
-          case 'european':
-            return null; // These expansions no longer exist
-          // Migration mapping
-          case 'oceania':
-            return 'nectar';
-          case 'asia':
-            return 'duet';
-          case 'americas':
-            return 'hummingbirds';
-          default:
-            return id; // Pass through any already-migrated IDs
-        }
-      });
+      const migrated = parsed.map(id => migrationMap[id] ?? id);
       
       // Filter out null values and invalid IDs
       const filtered = migrated.filter((id): id is string => id !== null && validIds.includes(id));
