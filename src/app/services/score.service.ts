@@ -281,8 +281,12 @@ export class ScoreService {
         return EXPANSIONS.map(e => e.id);
       }
       const parsed = JSON.parse(raw) as string[];
-      // Migrate old IDs to new ones for backward compatibility
       const validIds = EXPANSIONS.map(e => e.id);
+      
+      // Track if any removed expansions were present
+      const hadRemovedExpansions = parsed.some(id => id === 'base' || id === 'european');
+      
+      // Migrate old IDs to new ones for backward compatibility
       const migrated = parsed.map(id => {
         switch (id) {
           // Old expansion IDs (removed)
@@ -300,9 +304,13 @@ export class ScoreService {
             return id; // Pass through any already-migrated IDs
         }
       });
+      
       // Filter out null values and invalid IDs
       const filtered = migrated.filter((id): id is string => id !== null && validIds.includes(id));
-      return filtered;
+      
+      // If all saved expansions were removed, fall back to defaults
+      // Otherwise preserve the user's selection (even if empty)
+      return filtered.length === 0 && hadRemovedExpansions ? EXPANSIONS.map(e => e.id) : filtered;
     } catch {
       return EXPANSIONS.map(e => e.id);
     }
