@@ -58,9 +58,7 @@ describe('ScorecardComponent', () => {
     const wetlandInput = compiled.querySelector(
       'input[aria-label="Wetland nectar for Alice"]'
     ) as HTMLInputElement;
-    const totalNectarInput = compiled.querySelector(
-      'input[aria-label="Total nectar for Alice"]'
-    ) as HTMLInputElement;
+    const nectarScoreDisplay = compiled.querySelector('.nectar-score-text');
 
     setInputValue(birdPointsInput, 4);
     setInputValue(forestInput, 1);
@@ -68,8 +66,7 @@ describe('ScorecardComponent', () => {
     setInputValue(wetlandInput, 3);
     fixture.detectChanges();
 
-    expect(totalNectarInput.readOnly).toBe(true);
-    expect(totalNectarInput.value).toBe('6');
-    expect(compiled.querySelector('.total-row .total-cell strong')?.textContent?.trim()).toBe('10');
+    expect(nectarScoreDisplay?.textContent).toContain('5 + 5 + 5 = 15');
+    expect(compiled.querySelector('.total-row .total-cell strong')?.textContent?.trim()).toBe('19');
   });
 });
