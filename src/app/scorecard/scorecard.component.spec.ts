@@ -84,7 +84,7 @@ describe('ScorecardComponent', () => {
     const bob = players[1];
     const charlie = players[2];
 
-    // Set up nectar values for Forest habitat: Alice=5, Bob=5 (tied 1st), Charlie=3 (2nd)
+    // Set up nectar values for Forest habitat: Alice=5, Bob=5 (tied 1st), Charlie=3 (rank 3)
     scoreService.updateNectarScore(alice.id, 0, 5);
     scoreService.updateNectarScore(bob.id, 0, 5);
     scoreService.updateNectarScore(charlie.id, 0, 3);
@@ -98,15 +98,27 @@ describe('ScorecardComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const nectarScoreDisplays = compiled.querySelectorAll('.nectar-score-text');
+
+    // Get nectar score displays by their corresponding players
+    const aliceNectarDisplay = compiled.querySelector(
+      'input[aria-label="Forest nectar for Alice"]'
+    )?.closest('.nectar-cell')?.querySelector('.nectar-score-text') as HTMLElement;
+
+    const bobNectarDisplay = compiled.querySelector(
+      'input[aria-label="Forest nectar for Bob"]'
+    )?.closest('.nectar-cell')?.querySelector('.nectar-score-text') as HTMLElement;
+
+    const charlieNectarDisplay = compiled.querySelector(
+      'input[aria-label="Forest nectar for Charlie"]'
+    )?.closest('.nectar-cell')?.querySelector('.nectar-score-text') as HTMLElement;
 
     // Alice: Forest 3 (tied 1st) + Grassland 0 (no nectar) + Wetland 0 = 3
-    expect(nectarScoreDisplays[0]?.textContent).toContain('3 + 0 + 0 = 3');
+    expect(aliceNectarDisplay?.textContent).toContain('3 + 0 + 0 = 3');
 
     // Bob: Forest 3 (tied 1st) + Grassland 0 (no nectar) + Wetland 0 = 3
-    expect(nectarScoreDisplays[1]?.textContent).toContain('3 + 0 + 0 = 3');
+    expect(bobNectarDisplay?.textContent).toContain('3 + 0 + 0 = 3');
 
-    // Charlie: Forest 0 (2nd but not in top) + Grassland 5 (1st) + Wetland 0 = 5
-    expect(nectarScoreDisplays[2]?.textContent).toContain('0 + 5 + 0 = 5');
+    // Charlie: Forest 0 (rank 3, no points) + Grassland 5 (1st place) + Wetland 0 = 5
+    expect(charlieNectarDisplay?.textContent).toContain('0 + 5 + 0 = 5');
   });
 });
