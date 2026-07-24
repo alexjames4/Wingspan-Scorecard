@@ -19,7 +19,7 @@ describe('ScorecardComponent', () => {
   });
 
   it('shows the nectar row only when Nectar expansion is selected', () => {
-    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['asia']));
+    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify([]));
 
     const scoreService = TestBed.inject(ScoreService);
     scoreService.addPlayer('Alice');
