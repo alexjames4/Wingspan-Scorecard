@@ -292,8 +292,7 @@ export class ScoreService {
         'americas': 'hummingbirds',
       };
       
-      // Track if any known removed expansions were present
-      // (only base and european map to null in migrationMap)
+      // Track if any removed expansions (base or european) were present in saved data
       const hadRemovedExpansions = parsed.some(id => migrationMap[id] === null);
       
       // Migrate old IDs to new ones for backward compatibility
@@ -302,10 +301,10 @@ export class ScoreService {
       // Filter out null values and invalid IDs
       const filtered = migrated.filter((id): id is string => id !== null && validIds.includes(id));
       
-      // Fallback logic: restore defaults only if all saved expansions were
-      // removed (had base/european selected), preserving explicit empty selection otherwise
-      const hasAllExpansionsRemoved = filtered.length === 0 && hadRemovedExpansions;
-      return hasAllExpansionsRemoved ? EXPANSIONS.map(e => e.id) : filtered;
+      // Restore defaults only if user had only removed expansions selected,
+      // otherwise preserve their selection (even if empty)
+      const shouldRestoreDefaults = filtered.length === 0 && hadRemovedExpansions;
+      return shouldRestoreDefaults ? EXPANSIONS.map(e => e.id) : filtered;
     } catch {
       return EXPANSIONS.map(e => e.id);
     }
