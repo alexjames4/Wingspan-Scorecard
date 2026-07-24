@@ -21,7 +21,11 @@ export class App {
   protected showResetConfirm = signal(false);
   protected showClearConfirm = signal(false);
   protected colorPickerPlayerId = signal<string | null>(null);
-  protected isFullscreen = signal(this.loadFullscreenPreference());
+  protected isFullscreen = signal(false);
+
+  constructor() {
+    this.isFullscreen.set(this.loadFullscreenPreference());
+  }
 
   protected addPlayer(): void {
     this.scoreService.addPlayer(this.newPlayerName());

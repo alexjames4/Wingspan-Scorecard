@@ -23,6 +23,7 @@ $player-colors: (
 );
 
 $viewport-padding: 16px; // Horizontal buffer for viewport clipping prevention
+$z-index-fullscreen-header: 100; // Z-index for fullscreen mode header
 
 @mixin color-circle($color-name) {
   $color-map: map-get($player-colors, $color-name);
@@ -399,7 +400,7 @@ $viewport-padding: 16px; // Horizontal buffer for viewport clipping prevention
       top: 0;
       left: 0;
       right: 0;
-      z-index: 100;
+      z-index: $z-index-fullscreen-header;
       background: linear-gradient(135deg, #2c6e8a 0%, #3a8aad 100%);
       padding: 12px 16px;
       display: flex;
