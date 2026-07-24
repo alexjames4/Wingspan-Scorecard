@@ -301,7 +301,8 @@ export class ScoreService {
         }
       });
       // Filter out null values and invalid IDs
-      return Array.isArray(migrated) ? migrated.filter((id): id is string => id !== null && validIds.includes(id)) : EXPANSIONS.map(e => e.id);
+      const filtered = migrated.filter((id): id is string => id !== null && validIds.includes(id));
+      return filtered;
     } catch {
       return EXPANSIONS.map(e => e.id);
     }
