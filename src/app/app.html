@@ -18,14 +18,45 @@
         <ul class="player-list">
           @for (player of players(); track player.id) {
             <li class="player-item">
-              <span class="player-icon">🐦</span>
+              <button 
+                type="button"
+                class="player-icon-btn" 
+                [class]="'icon-' + player.color"
+                (click)="openColorPicker(player.id, $event)"
+                [attr.aria-label]="'Change color for ' + player.name"
+                title="Click to change color"
+              >
+                🐦
+              </button>
               <span class="player-name">{{ player.name }}</span>
               <button
+                type="button"
                 class="btn-icon remove-btn"
                 (click)="removePlayer(player.id)"
                 [attr.aria-label]="'Remove ' + player.name"
                 title="Remove player"
               >✕</button>
+              
+              <!-- Color Picker -->
+              @if (colorPickerPlayerId() === player.id) {
+                <div class="color-picker" role="radiogroup" [attr.aria-label]="'Select color for ' + player.name">
+                  @for (color of PLAYER_COLORS; track color) {
+                    <button 
+                      type="button"
+                      class="color-option" 
+                      [class]="'color-' + color"
+                      role="radio"
+                      [attr.aria-checked]="player.color === color"
+                      (click)="selectPlayerColor(player.id, color)"
+                      [attr.aria-label]="color + ' color'"
+                    >
+                      @if (player.color === color) {
+                        <span class="checkmark">✓</span>
+                      }
+                    </button>
+                  }
+                </div>
+              }
             </li>
           }
         </ul>

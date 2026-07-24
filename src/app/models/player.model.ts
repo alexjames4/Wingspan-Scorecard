@@ -17,9 +17,14 @@ export interface PlayerScore {
 
 export type ScoreField = keyof Omit<PlayerScore, 'endOfRoundGoals' | 'nectar'>;
 
+export type PlayerColor = 'yellow' | 'lime' | 'red' | 'cyan' | 'magenta';
+
+export const PLAYER_COLORS: PlayerColor[] = ['yellow', 'lime', 'red', 'cyan', 'magenta'];
+
 export interface Player {
   id: string;
   name: string;
+  color: PlayerColor;
   score: PlayerScore;
 }
 

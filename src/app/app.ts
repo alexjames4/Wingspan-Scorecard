@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ScoreService } from './services/score.service';
 import { ScorecardComponent } from './scorecard/scorecard.component';
 import { ExpansionSelectorComponent } from './scorecard/expansion-selector.component';
+import { PLAYER_COLORS, PlayerColor } from './models/player.model';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,12 @@ export class App {
   protected readonly scoreService = inject(ScoreService);
   protected readonly players = this.scoreService.players;
   protected readonly hasPlayers = computed(() => this.players().length > 0);
+  protected readonly PLAYER_COLORS = PLAYER_COLORS;
 
   protected newPlayerName = signal('');
   protected showResetConfirm = signal(false);
   protected showClearConfirm = signal(false);
+  protected colorPickerPlayerId = signal<string | null>(null);
 
   protected addPlayer(): void {
     this.scoreService.addPlayer(this.newPlayerName());
@@ -43,4 +46,14 @@ export class App {
   }
 
   protected canAddPlayer = computed(() => this.players().length < 5);
+
+  protected selectPlayerColor(playerId: string, color: PlayerColor): void {
+    this.scoreService.updatePlayerColor(playerId, color);
+    this.colorPickerPlayerId.set(null);
+  }
+
+  protected openColorPicker(playerId: string, event: Event): void {
+    event.stopPropagation();
+    this.colorPickerPlayerId.set(this.colorPickerPlayerId() === playerId ? null : playerId);
+  }
 }

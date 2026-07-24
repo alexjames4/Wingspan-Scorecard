@@ -4,6 +4,8 @@ import {
   NectarCompetitionPoints,
   Player,
   PlayerScore,
+  PlayerColor,
+  PLAYER_COLORS,
   ScoreField,
   createDefaultScore,
   createEmptyNectarCompetitionPoints,
@@ -34,11 +36,24 @@ export class ScoreService {
   addPlayer(name: string): boolean {
     if (this._players().length >= 5) return false;
     const trimmed = name.trim();
+    const usedColors = this._players().map(p => p.color);
+    const availableColors = PLAYER_COLORS.filter(color => !usedColors.includes(color));
+    
+    let assignedColor: PlayerColor;
+    if (availableColors.length > 0) {
+      assignedColor = availableColors[0];
+    } else {
+      // Fallback: all colors used, use modulo to cycle through colors
+      const colorIndex = this._players().length % PLAYER_COLORS.length;
+      assignedColor = PLAYER_COLORS[colorIndex];
+    }
+    
     this._players.update(ps => [
       ...ps,
       {
         id: crypto.randomUUID(),
         name: trimmed || `Player ${ps.length + 1}`,
+        color: assignedColor,
         score: createDefaultScore(),
       },
     ]);
@@ -54,6 +69,13 @@ export class ScoreService {
   renamePlayer(id: string, name: string): void {
     this._players.update(ps =>
       ps.map(p => (p.id === id ? { ...p, name: name.trim() || p.name } : p))
+    );
+    this.save();
+  }
+
+  updatePlayerColor(id: string, color: PlayerColor): void {
+    this._players.update(ps =>
+      ps.map(p => (p.id === id ? { ...p, color } : p))
     );
     this.save();
   }
@@ -233,14 +255,14 @@ export class ScoreService {
       return Array.isArray(parsed)
         ? parsed
             .filter(p => p?.id && p?.name && p?.score)
-            .map(player => this.normalizePlayer(player))
+            .map((player, index) => this.normalizePlayer(player, index))
         : [];
     } catch {
       return [];
     }
   }
 
-  private normalizePlayer(player: Player): Player {
+  private normalizePlayer(player: Player, colorIndex: number): Player {
     const defaultScore = createDefaultScore();
     const rawGoals = Array.isArray(player.score.endOfRoundGoals)
       ? player.score.endOfRoundGoals
@@ -250,8 +272,11 @@ export class ScoreService {
       ? player.score.nectarCompetitionPoints
       : defaultScore.nectarCompetitionPoints;
 
+    const color = this.getValidPlayerColor(player.color, colorIndex);
+
     return {
       ...player,
+      color,
       score: {
         ...defaultScore,
         ...player.score,
@@ -271,6 +296,13 @@ export class ScoreService {
         ) as NectarCompetitionPoints,
       },
     };
+  }
+
+  private getValidPlayerColor(color: PlayerColor | unknown, defaultIndex: number): PlayerColor {
+    if (color && typeof color === 'string' && PLAYER_COLORS.includes(color as PlayerColor)) {
+      return color as PlayerColor;
+    }
+    return PLAYER_COLORS[defaultIndex % PLAYER_COLORS.length];
   }
 
   private loadExpansionsFromStorage(): string[] {

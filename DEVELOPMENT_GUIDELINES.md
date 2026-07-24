@@ -6,6 +6,31 @@
 
 When in doubt about design decisions, placement, styling, or functionality, ask the user for clarification before implementing.
 
+## Player Management
+
+### Player Colors
+
+Player pills display bird icons with auto-assigned colors that help visually distinguish between players:
+- **Yellow** - First player
+- **Lime/Green** - Second player
+- **Red** - Third player
+- **Cyan** - Fourth player
+- **Magenta** - Fifth player
+
+Each player can click on their bird icon to open a color picker and select a different color. The color selection is persisted in localStorage.
+
+## Pull Request Workflow
+
+**All implementation tasks must conclude with a Pull Request.**
+
+After completing implementation of any feature or fix in a session:
+1. Ensure all code changes are committed
+2. Create a Pull Request for review
+3. Include a clear description of changes made
+4. Link to any related issues or requirements
+
+This ensures code review and maintains a clear history of all changes in the repository.
+
 ## Expansions
 
 ### Available Expansions
