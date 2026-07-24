@@ -283,9 +283,6 @@ export class ScoreService {
       const parsed = JSON.parse(raw) as string[];
       const validIds = EXPANSIONS.map(e => e.id);
       
-      // Track if any removed expansions were present
-      const hadRemovedExpansions = parsed.some(id => id === 'base' || id === 'european');
-      
       // Migration map for old IDs to new IDs (null = removed)
       const migrationMap: Record<string, string | null> = {
         'base': null,
@@ -295,8 +292,11 @@ export class ScoreService {
         'americas': 'hummingbirds',
       };
       
+      // Track if any removed expansions were present
+      const hadRemovedExpansions = parsed.some(id => Object.hasOwn(migrationMap, id) && migrationMap[id] === null);
+      
       // Migrate old IDs to new ones for backward compatibility
-      const migrated = parsed.map(id => migrationMap[id] ?? id);
+      const migrated = parsed.map(id => Object.hasOwn(migrationMap, id) ? migrationMap[id] : id);
       
       // Filter out null values and invalid IDs
       const filtered = migrated.filter((id): id is string => id !== null && validIds.includes(id));
