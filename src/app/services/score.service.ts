@@ -172,8 +172,13 @@ export class ScoreService {
         while (i < habitatScores.length) {
           const currentValue = habitatScores[i].nectarValue;
 
+          // Skip if no nectar in this habitat
+          if (currentValue === 0) {
+            break;
+          }
+
           // Find all players with the same nectar value (tied)
-          const tiedPlayers = [];
+          const tiedPlayers: typeof habitatScores = [];
           let j = i;
           while (j < habitatScores.length && habitatScores[j].nectarValue === currentValue) {
             tiedPlayers.push(habitatScores[j]);

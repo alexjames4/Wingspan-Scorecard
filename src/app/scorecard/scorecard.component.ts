@@ -44,7 +44,8 @@ export class ScorecardComponent {
 
   protected getNectarCompetitionPoints(player: Player): string {
     const points = player.score.nectarCompetitionPoints;
-    return `${points[0]} + ${points[1]} + ${points[2]} = ${this.getNectarTotal(player)}`;
+    const pointsList = Array.from(points).map(String).join(' + ');
+    return `${pointsList} = ${calculateNectarCompetitionTotal(player.score.nectarCompetitionPoints)}`;
   }
 
   protected onInput(playerId: string, field: ScoreField, event: Event): void {
