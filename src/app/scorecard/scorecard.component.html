@@ -129,7 +129,7 @@
         <tr>
           <td class="label-col sticky-col">
             <span class="row-icon">🍯</span> Nectar
-            <small class="hint">per habitat</small>
+            <small class="hint">competition pts</small>
           </td>
           @for (player of players(); track player.id) {
             <td class="score-cell nectar-cell">
@@ -147,16 +147,10 @@
                   </label>
                 }
 
-                <label class="nectar-entry">
-                  <span class="nectar-label">Total</span>
-                  <input
-                    type="number"
-                    [value]="getNectarTotal(player)"
-                    readonly
-                    tabindex="-1"
-                    [attr.aria-label]="'Total nectar for ' + player.name"
-                  />
-                </label>
+                <div class="nectar-score-display">
+                  <span class="nectar-label">Score</span>
+                  <div class="nectar-score-text">{{ getNectarCompetitionPoints(player) }}</div>
+                </div>
               </div>
             </td>
           }
