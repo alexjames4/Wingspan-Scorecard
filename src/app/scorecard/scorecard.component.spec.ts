@@ -19,7 +19,7 @@ describe('ScorecardComponent', () => {
   });
 
   it('shows the nectar row only when Oceania expansion is selected', () => {
-    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['base']));
+    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['asia']));
 
     const scoreService = TestBed.inject(ScoreService);
     scoreService.addPlayer('Alice');
