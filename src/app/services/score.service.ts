@@ -261,11 +261,11 @@ export class ScoreService {
       ? player.score.nectarCompetitionPoints
       : defaultScore.nectarCompetitionPoints;
 
+    const color = this._getValidPlayerColor(player.color, colorIndex);
+
     return {
       ...player,
-      color: (player.color && PLAYER_COLORS.includes(player.color)) 
-        ? player.color 
-        : PLAYER_COLORS[colorIndex % PLAYER_COLORS.length],
+      color,
       score: {
         ...defaultScore,
         ...player.score,
@@ -285,6 +285,13 @@ export class ScoreService {
         ) as NectarCompetitionPoints,
       },
     };
+  }
+
+  private _getValidPlayerColor(color: PlayerColor | unknown, defaultIndex: number): PlayerColor {
+    if (color && typeof color === 'string' && PLAYER_COLORS.includes(color as PlayerColor)) {
+      return color as PlayerColor;
+    }
+    return PLAYER_COLORS[defaultIndex % PLAYER_COLORS.length];
   }
 
   private loadExpansionsFromStorage(): string[] {
