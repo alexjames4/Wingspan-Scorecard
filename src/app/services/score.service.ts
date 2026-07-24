@@ -272,7 +272,7 @@ export class ScoreService {
       ? player.score.nectarCompetitionPoints
       : defaultScore.nectarCompetitionPoints;
 
-    const color = this._getValidPlayerColor(player.color, colorIndex);
+    const color = this.getValidPlayerColor(player.color, colorIndex);
 
     return {
       ...player,
@@ -298,7 +298,7 @@ export class ScoreService {
     };
   }
 
-  private _getValidPlayerColor(color: PlayerColor | unknown, defaultIndex: number): PlayerColor {
+  private getValidPlayerColor(color: PlayerColor | unknown, defaultIndex: number): PlayerColor {
     if (color && typeof color === 'string' && PLAYER_COLORS.includes(color as PlayerColor)) {
       return color as PlayerColor;
     }
