@@ -282,8 +282,14 @@ export class ScoreService {
       }
       const parsed = JSON.parse(raw) as string[];
       // Migrate old IDs to new ones for backward compatibility
+      const validIds = EXPANSIONS.map(e => e.id);
       const migrated = parsed.map(id => {
         switch (id) {
+          // Old expansion IDs (removed)
+          case 'base':
+          case 'european':
+            return null; // These expansions no longer exist
+          // Migration mapping
           case 'oceania':
             return 'nectar';
           case 'asia':
@@ -291,12 +297,11 @@ export class ScoreService {
           case 'americas':
             return 'hummingbirds';
           default:
-            return id;
+            return id; // Pass through any already-migrated IDs
         }
       });
-      // Filter to only include valid expansion IDs
-      const validIds = EXPANSIONS.map(e => e.id);
-      return Array.isArray(migrated) ? migrated.filter(id => validIds.includes(id)) : EXPANSIONS.map(e => e.id);
+      // Filter out null values and invalid IDs
+      return Array.isArray(migrated) ? migrated.filter((id): id is string => id !== null && validIds.includes(id)) : EXPANSIONS.map(e => e.id);
     } catch {
       return EXPANSIONS.map(e => e.id);
     }
