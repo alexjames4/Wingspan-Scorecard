@@ -38,14 +38,22 @@ export class ScoreService {
     const trimmed = name.trim();
     const usedColors = this._players().map(p => p.color);
     const availableColors = PLAYER_COLORS.filter(color => !usedColors.includes(color));
-    const colorIndex = availableColors.length > 0 ? PLAYER_COLORS.indexOf(availableColors[0]) : 0;
+    
+    let assignedColor: PlayerColor;
+    if (availableColors.length > 0) {
+      assignedColor = availableColors[0];
+    } else {
+      // Fallback: all colors used, use modulo to cycle through colors
+      const colorIndex = this._players().length % PLAYER_COLORS.length;
+      assignedColor = PLAYER_COLORS[colorIndex];
+    }
     
     this._players.update(ps => [
       ...ps,
       {
         id: crypto.randomUUID(),
         name: trimmed || `Player ${ps.length + 1}`,
-        color: PLAYER_COLORS[colorIndex],
+        color: assignedColor,
         score: createDefaultScore(),
       },
     ]);

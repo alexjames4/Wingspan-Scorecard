@@ -22,6 +22,8 @@ $player-colors: (
   )
 );
 
+$viewport-padding: 16px; // Horizontal buffer for viewport clipping prevention
+
 @mixin color-circle($color-name) {
   $color-map: map-get($player-colors, $color-name);
   $bg: map-get($color-map, 'bg');
@@ -190,7 +192,7 @@ $player-colors: (
     box-shadow: 0 4px 12px rgba(44, 110, 138, 0.2);
     z-index: 10;
     white-space: nowrap;
-    max-width: calc(100vw - 16px);
+    max-width: calc(100vw - #{$viewport-padding});
     flex-wrap: wrap;
     flex-direction: row;
 
