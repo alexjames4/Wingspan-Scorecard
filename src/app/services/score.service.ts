@@ -6,6 +6,7 @@ import {
   PlayerScore,
   ScoreField,
   createDefaultScore,
+  createEmptyNectarCompetitionPoints,
   calculateTotal,
 } from '../models/player.model';
 import { EXPANSIONS } from '../models/expansion.model';
@@ -153,7 +154,7 @@ export class ScoreService {
   private _calculateAndUpdateNectarCompetitionPoints(): void {
     this._players.update(ps => {
       // For each habitat, calculate points
-      const habitatPoints: NectarCompetitionPoints[] = ps.map(() => [0, 0, 0]);
+      const habitatPoints: NectarCompetitionPoints[] = ps.map(() => createEmptyNectarCompetitionPoints());
 
       for (let habitatIndex = 0; habitatIndex < TOTAL_NECTAR_HABITATS; habitatIndex++) {
         // Get all players with their nectar values for this habitat

@@ -32,7 +32,7 @@ export function createDefaultScore(): PlayerScore {
     cachedFood: 0,
     tuckedCards: 0,
     nectar: [0, 0, 0],
-    nectarCompetitionPoints: [0, 0, 0],
+    nectarCompetitionPoints: createEmptyNectarCompetitionPoints(),
     duetGroup: 0,
     hummingbirds: 0,
     unusedFood: 0,
@@ -45,6 +45,10 @@ export function calculateNectarTotal(score: PlayerScore): number {
 
 export function calculateNectarCompetitionTotal(nectarCompetitionPoints: NectarCompetitionPoints): number {
   return nectarCompetitionPoints.reduce((a, b) => a + b, 0);
+}
+
+export function createEmptyNectarCompetitionPoints(): NectarCompetitionPoints {
+  return [0, 0, 0];
 }
 
 export function calculateTotal(score: PlayerScore): number {
