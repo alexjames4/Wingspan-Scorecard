@@ -4,7 +4,7 @@ export interface Expansion {
 }
 
 export const EXPANSIONS: Expansion[] = [
-  { id: 'oceania', label: 'Nectar' },
-  { id: 'asia', label: 'Duet' },
-  { id: 'americas', label: 'Hummingbirds' },
+  { id: 'nectar', label: 'Nectar' },
+  { id: 'duet', label: 'Duet' },
+  { id: 'hummingbirds', label: 'Hummingbirds' },
 ];

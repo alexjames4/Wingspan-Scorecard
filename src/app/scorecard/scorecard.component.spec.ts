@@ -30,14 +30,14 @@ describe('ScorecardComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.textContent).not.toContain('Nectar');
 
-    scoreService.toggleExpansion('oceania');
+    scoreService.toggleExpansion('nectar');
     fixture.detectChanges();
 
     expect(compiled.textContent).toContain('Nectar');
   });
 
   it('updates nectar totals and includes them in the grand total', () => {
-    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['base', 'oceania']));
+    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['nectar']));
 
     const scoreService = TestBed.inject(ScoreService);
     scoreService.addPlayer('Alice');
@@ -77,7 +77,7 @@ describe('ScorecardComponent', () => {
   });
 
   it('awards correct points for tied 1st place and 2nd place in nectar competitions', () => {
-    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['base', 'oceania']));
+    localStorage.setItem(EXPANSIONS_STORAGE_KEY, JSON.stringify(['nectar']));
 
     const scoreService = TestBed.inject(ScoreService);
     scoreService.addPlayer('Alice');

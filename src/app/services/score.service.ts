@@ -281,7 +281,22 @@ export class ScoreService {
         return EXPANSIONS.map(e => e.id);
       }
       const parsed = JSON.parse(raw) as string[];
-      return Array.isArray(parsed) ? parsed : EXPANSIONS.map(e => e.id);
+      // Migrate old IDs to new ones for backward compatibility
+      const migrated = parsed.map(id => {
+        switch (id) {
+          case 'oceania':
+            return 'nectar';
+          case 'asia':
+            return 'duet';
+          case 'americas':
+            return 'hummingbirds';
+          default:
+            return id;
+        }
+      });
+      // Filter to only include valid expansion IDs
+      const validIds = EXPANSIONS.map(e => e.id);
+      return Array.isArray(migrated) ? migrated.filter(id => validIds.includes(id)) : EXPANSIONS.map(e => e.id);
     } catch {
       return EXPANSIONS.map(e => e.id);
     }
