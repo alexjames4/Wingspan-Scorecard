@@ -39,7 +39,7 @@
               
               <!-- Color Picker -->
               @if (colorPickerPlayerId() === player.id) {
-                <div class="color-picker">
+                <div class="color-picker" role="radiogroup" [attr.aria-label]="'Select color for ' + player.name">
                   @for (color of PLAYER_COLORS; track color) {
                     <button 
                       type="button"
@@ -48,7 +48,7 @@
                       role="radio"
                       [attr.aria-checked]="player.color === color"
                       (click)="selectPlayerColor(player.id, color)"
-                      [attr.aria-label]="'Select ' + color + ' color'"
+                      [attr.aria-label]="color + ' color'"
                     >
                       @if (player.color === color) {
                         <span class="checkmark">✓</span>

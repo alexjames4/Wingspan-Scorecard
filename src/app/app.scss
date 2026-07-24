@@ -1,3 +1,43 @@
+/* ── Player Colors Variables & Mixins ────────── */
+$player-colors: (
+  'yellow': (
+    'bg': #f4d857,
+    'shadow': rgba(244, 216, 87, 0.4)
+  ),
+  'lime': (
+    'bg': #9bc843,
+    'shadow': rgba(155, 200, 67, 0.4)
+  ),
+  'red': (
+    'bg': #d64a4a,
+    'shadow': rgba(214, 74, 74, 0.4)
+  ),
+  'cyan': (
+    'bg': #4fbdba,
+    'shadow': rgba(79, 189, 186, 0.4)
+  ),
+  'magenta': (
+    'bg': #c957c9,
+    'shadow': rgba(201, 87, 201, 0.4)
+  )
+);
+
+@mixin color-circle($color-name) {
+  $color-map: map-get($player-colors, $color-name);
+  $bg: map-get($color-map, 'bg');
+  $shadow: map-get($color-map, 'shadow');
+  background: $bg;
+  box-shadow: 0 2px 8px $shadow;
+}
+
+@mixin color-circle-small($color-name) {
+  $color-map: map-get($player-colors, $color-name);
+  $bg: map-get($color-map, 'bg');
+  $shadow: map-get($color-map, 'shadow');
+  background: $bg;
+  box-shadow: 0 2px 6px $shadow;
+}
+
 .app-bg {
   min-height: 100vh;
   background: linear-gradient(160deg, #9dcfe0 0%, #b8dcea 20%, #cce7f0 45%, #dff0f6 70%, #f0f8fb 100%);
@@ -123,34 +163,10 @@
       border-color: rgba(0, 0, 0, 0.3);
     }
 
-    /* Yellow */
-    &.icon-yellow {
-      background: #f4d857;
-      box-shadow: 0 2px 8px rgba(244, 216, 87, 0.4);
-    }
-
-    /* Lime/Green */
-    &.icon-lime {
-      background: #9bc843;
-      box-shadow: 0 2px 8px rgba(155, 200, 67, 0.4);
-    }
-
-    /* Red */
-    &.icon-red {
-      background: #d64a4a;
-      box-shadow: 0 2px 8px rgba(214, 74, 74, 0.4);
-    }
-
-    /* Cyan */
-    &.icon-cyan {
-      background: #4fbdba;
-      box-shadow: 0 2px 8px rgba(79, 189, 186, 0.4);
-    }
-
-    /* Magenta */
-    &.icon-magenta {
-      background: #c957c9;
-      box-shadow: 0 2px 8px rgba(201, 87, 201, 0.4);
+    @each $color in 'yellow', 'lime', 'red', 'cyan', 'magenta' {
+      &.icon-#{$color} {
+        @include color-circle($color);
+      }
     }
   }
 
@@ -203,34 +219,10 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
       }
 
-      /* Yellow */
-      &.color-yellow {
-        background: #f4d857;
-        box-shadow: 0 2px 6px rgba(244, 216, 87, 0.4);
-      }
-
-      /* Lime/Green */
-      &.color-lime {
-        background: #9bc843;
-        box-shadow: 0 2px 6px rgba(155, 200, 67, 0.4);
-      }
-
-      /* Red */
-      &.color-red {
-        background: #d64a4a;
-        box-shadow: 0 2px 6px rgba(214, 74, 74, 0.4);
-      }
-
-      /* Cyan */
-      &.color-cyan {
-        background: #4fbdba;
-        box-shadow: 0 2px 6px rgba(79, 189, 186, 0.4);
-      }
-
-      /* Magenta */
-      &.color-magenta {
-        background: #c957c9;
-        box-shadow: 0 2px 6px rgba(201, 87, 201, 0.4);
+      @each $color in 'yellow', 'lime', 'red', 'cyan', 'magenta' {
+        &.color-#{$color} {
+          @include color-circle-small($color);
+        }
       }
     }
   }

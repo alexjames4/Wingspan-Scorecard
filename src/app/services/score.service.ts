@@ -36,7 +36,10 @@ export class ScoreService {
   addPlayer(name: string): boolean {
     if (this._players().length >= 5) return false;
     const trimmed = name.trim();
-    const colorIndex = this._players().length % PLAYER_COLORS.length;
+    const usedColors = this._players().map(p => p.color);
+    const availableColors = PLAYER_COLORS.filter(color => !usedColors.includes(color));
+    const colorIndex = availableColors.length > 0 ? PLAYER_COLORS.indexOf(availableColors[0]) : 0;
+    
     this._players.update(ps => [
       ...ps,
       {
