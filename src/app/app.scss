@@ -163,9 +163,8 @@
 
   .color-picker {
     position: absolute;
-    top: 100%;
+    bottom: calc(100% + 8px);
     left: 0;
-    margin-top: 6px;
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(74, 144, 196, 0.3);
     border-radius: 10px;
@@ -174,6 +173,10 @@
     gap: 6px;
     box-shadow: 0 4px 12px rgba(44, 110, 138, 0.2);
     z-index: 10;
+    white-space: nowrap;
+    max-width: calc(100vw - 16px);
+    flex-wrap: wrap;
+    flex-direction: row;
 
     .color-option {
       width: 32px;
@@ -186,6 +189,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
 
       &:hover {
         transform: scale(1.1);

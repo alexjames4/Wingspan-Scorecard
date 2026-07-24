@@ -19,6 +19,7 @@
           @for (player of players(); track player.id) {
             <li class="player-item">
               <button 
+                type="button"
                 class="player-icon-btn" 
                 [class]="'icon-' + player.color"
                 (click)="openColorPicker(player.id, $event)"
@@ -29,6 +30,7 @@
               </button>
               <span class="player-name">{{ player.name }}</span>
               <button
+                type="button"
                 class="btn-icon remove-btn"
                 (click)="removePlayer(player.id)"
                 [attr.aria-label]="'Remove ' + player.name"
@@ -40,8 +42,11 @@
                 <div class="color-picker">
                   @for (color of PLAYER_COLORS; track color) {
                     <button 
+                      type="button"
                       class="color-option" 
                       [class]="'color-' + color"
+                      role="radio"
+                      [attr.aria-checked]="player.color === color"
                       (click)="selectPlayerColor(player.id, color)"
                       [attr.aria-label]="'Select ' + color + ' color'"
                     >
