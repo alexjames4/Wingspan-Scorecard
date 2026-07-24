@@ -22,7 +22,7 @@ The app supports multiple Wingspan expansions that users can select from:
 - The selection is stored in localStorage and persists across sessions
 - Future PRs will handle how selections affect the scorecard content
 
-### Nectar Expansion - Nectar Row
+### Nectar - Nectar Row
 
 When the Nectar expansion is selected:
 - A "Nectar" row is added to the scorecard
