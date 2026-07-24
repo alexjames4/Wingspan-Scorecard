@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, effect } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ScoreService } from './services/score.service';
 import { ScorecardComponent } from './scorecard/scorecard.component';
@@ -22,13 +22,6 @@ export class App {
   protected showClearConfirm = signal(false);
   protected colorPickerPlayerId = signal<string | null>(null);
   protected isFullscreen = signal(this.loadFullscreenPreference());
-
-  constructor() {
-    // Automatically persist fullscreen preference to localStorage whenever it changes
-    effect(() => {
-      this.saveFullscreenPreference(this.isFullscreen());
-    });
-  }
 
   protected addPlayer(): void {
     this.scoreService.addPlayer(this.newPlayerName());
@@ -67,6 +60,7 @@ export class App {
 
   protected toggleFullscreen(): void {
     this.isFullscreen.set(!this.isFullscreen());
+    this.saveFullscreenPreference(this.isFullscreen());
   }
 
   private loadFullscreenPreference(): boolean {
