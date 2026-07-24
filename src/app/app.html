@@ -18,7 +18,15 @@
         <ul class="player-list">
           @for (player of players(); track player.id) {
             <li class="player-item">
-              <span class="player-icon">🐦</span>
+              <button 
+                class="player-icon-btn" 
+                [class]="'icon-' + player.color"
+                (click)="openColorPicker(player.id, $event)"
+                [attr.aria-label]="'Change color for ' + player.name"
+                title="Click to change color"
+              >
+                🐦
+              </button>
               <span class="player-name">{{ player.name }}</span>
               <button
                 class="btn-icon remove-btn"
@@ -26,6 +34,24 @@
                 [attr.aria-label]="'Remove ' + player.name"
                 title="Remove player"
               >✕</button>
+              
+              <!-- Color Picker -->
+              @if (colorPickerPlayerId() === player.id) {
+                <div class="color-picker">
+                  @for (color of PLAYER_COLORS; track color) {
+                    <button 
+                      class="color-option" 
+                      [class]="'color-' + color"
+                      (click)="selectPlayerColor(player.id, color)"
+                      [attr.aria-label]="'Select ' + color + ' color'"
+                    >
+                      @if (player.color === color) {
+                        <span class="checkmark">✓</span>
+                      }
+                    </button>
+                  }
+                </div>
+              }
             </li>
           }
         </ul>

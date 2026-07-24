@@ -4,6 +4,8 @@ import {
   NectarCompetitionPoints,
   Player,
   PlayerScore,
+  PlayerColor,
+  PLAYER_COLORS,
   ScoreField,
   createDefaultScore,
   createEmptyNectarCompetitionPoints,
@@ -34,11 +36,13 @@ export class ScoreService {
   addPlayer(name: string): boolean {
     if (this._players().length >= 5) return false;
     const trimmed = name.trim();
+    const colorIndex = this._players().length % PLAYER_COLORS.length;
     this._players.update(ps => [
       ...ps,
       {
         id: crypto.randomUUID(),
         name: trimmed || `Player ${ps.length + 1}`,
+        color: PLAYER_COLORS[colorIndex],
         score: createDefaultScore(),
       },
     ]);
@@ -54,6 +58,13 @@ export class ScoreService {
   renamePlayer(id: string, name: string): void {
     this._players.update(ps =>
       ps.map(p => (p.id === id ? { ...p, name: name.trim() || p.name } : p))
+    );
+    this.save();
+  }
+
+  updatePlayerColor(id: string, color: PlayerColor): void {
+    this._players.update(ps =>
+      ps.map(p => (p.id === id ? { ...p, color } : p))
     );
     this.save();
   }
@@ -233,14 +244,14 @@ export class ScoreService {
       return Array.isArray(parsed)
         ? parsed
             .filter(p => p?.id && p?.name && p?.score)
-            .map(player => this.normalizePlayer(player))
+            .map((player, index) => this.normalizePlayer(player, index))
         : [];
     } catch {
       return [];
     }
   }
 
-  private normalizePlayer(player: Player): Player {
+  private normalizePlayer(player: Player, colorIndex: number): Player {
     const defaultScore = createDefaultScore();
     const rawGoals = Array.isArray(player.score.endOfRoundGoals)
       ? player.score.endOfRoundGoals
@@ -252,6 +263,9 @@ export class ScoreService {
 
     return {
       ...player,
+      color: (player.color && PLAYER_COLORS.includes(player.color)) 
+        ? player.color 
+        : PLAYER_COLORS[colorIndex % PLAYER_COLORS.length],
       score: {
         ...defaultScore,
         ...player.score,

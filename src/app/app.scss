@@ -93,6 +93,7 @@
 }
 
 .player-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -104,8 +105,54 @@
   color: #1e3a4a;
   font-weight: 500;
 
-  .player-icon {
+  .player-icon-btn {
+    background: none;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      transform: scale(1.1);
+      border-color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Yellow */
+    &.icon-yellow {
+      background: #f4d857;
+      box-shadow: 0 2px 8px rgba(244, 216, 87, 0.4);
+    }
+
+    /* Lime/Green */
+    &.icon-lime {
+      background: #9bc843;
+      box-shadow: 0 2px 8px rgba(155, 200, 67, 0.4);
+    }
+
+    /* Red */
+    &.icon-red {
+      background: #d64a4a;
+      box-shadow: 0 2px 8px rgba(214, 74, 74, 0.4);
+    }
+
+    /* Cyan */
+    &.icon-cyan {
+      background: #4fbdba;
+      box-shadow: 0 2px 8px rgba(79, 189, 186, 0.4);
+    }
+
+    /* Magenta */
+    &.icon-magenta {
+      background: #c957c9;
+      box-shadow: 0 2px 8px rgba(201, 87, 201, 0.4);
+    }
   }
 
   .player-name {
@@ -113,6 +160,76 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .color-picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(74, 144, 196, 0.3);
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(44, 110, 138, 0.2);
+    z-index: 10;
+
+    .color-option {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        transform: scale(1.1);
+        border-color: rgba(0, 0, 0, 0.3);
+      }
+
+      .checkmark {
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Yellow */
+      &.color-yellow {
+        background: #f4d857;
+        box-shadow: 0 2px 6px rgba(244, 216, 87, 0.4);
+      }
+
+      /* Lime/Green */
+      &.color-lime {
+        background: #9bc843;
+        box-shadow: 0 2px 6px rgba(155, 200, 67, 0.4);
+      }
+
+      /* Red */
+      &.color-red {
+        background: #d64a4a;
+        box-shadow: 0 2px 6px rgba(214, 74, 74, 0.4);
+      }
+
+      /* Cyan */
+      &.color-cyan {
+        background: #4fbdba;
+        box-shadow: 0 2px 6px rgba(79, 189, 186, 0.4);
+      }
+
+      /* Magenta */
+      &.color-magenta {
+        background: #c957c9;
+        box-shadow: 0 2px 6px rgba(201, 87, 201, 0.4);
+      }
+    }
   }
 }
 
