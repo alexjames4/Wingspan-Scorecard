@@ -81,7 +81,9 @@
     </section>
 
     <!-- Expansion Selector -->
-    <app-expansion-selector />
+    @if (!isFullscreen()) {
+      <app-expansion-selector />
+    }
 
     <!-- Scorecard -->
     @if (hasPlayers()) {
