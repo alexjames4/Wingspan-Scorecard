@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { ScoreService } from '../services/score.service';
 import { Player, ScoreField, calculateNectarCompetitionTotal } from '../models/player.model';
 
@@ -17,6 +17,13 @@ export class ScorecardComponent {
   protected readonly showNectarRow = computed(() => this.selectedExpansions().includes('nectar'));
   protected readonly showDuetGroupRow = computed(() => this.selectedExpansions().includes('duet'));
   protected readonly showHummingbirdsRow = computed(() => this.selectedExpansions().includes('hummingbirds'));
+
+  readonly isFullscreen = input(false);
+  readonly toggleFullscreen = output<void>();
+
+  protected toggleFullscreenMode(): void {
+    this.toggleFullscreen.emit();
+  }
 
   protected getTotal(player: Player): number {
     return this.scoreService.getTotal(player.score);

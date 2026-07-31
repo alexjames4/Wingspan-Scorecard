@@ -93,6 +93,16 @@ When the Americas Expansion is selected:
 
 In future iterations, the user would like to implement theme selections (e.g., dark mode). Any styling should be designed with this in mind and avoid hardcoding colors where possible.
 
+## User Experience
+
+### Fullscreen Mode
+
+When the scorecard is displayed in fullscreen mode:
+- The close button (✕) is integrated directly into the table header's "Category" column
+- This maximizes viewport usage by eliminating a separate header row, allowing more scorecard rows to be visible
+- The button is positioned on the right side of the header cell, maintaining alignment with the header styling
+- Only visible when in fullscreen mode (hidden in normal view)
+
 ## Architecture
 
 - Project uses Angular v21 with standalone components

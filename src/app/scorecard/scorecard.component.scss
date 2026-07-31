@@ -30,6 +30,13 @@
         text-align: left;
         font-size: 0.75rem;
         opacity: 0.85;
+
+        .header-content {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+        }
       }
 
       &.player-col {
@@ -226,5 +233,29 @@ thead .sticky-col {
   &.leading {
     color: #2c6e8a;
     font-size: 1.4rem;
+  }
+}
+
+/* ── Fullscreen Close Button ─────────────────── */
+.btn-fullscreen-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 }
