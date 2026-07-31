@@ -2,7 +2,22 @@
   <table class="scorecard-table">
     <thead>
       <tr>
-        <th class="label-col sticky-col">Category</th>
+        <th class="label-col sticky-col">
+          <div class="header-content">
+            <span>Category</span>
+            @if (isFullscreen()) {
+              <button 
+                type="button" 
+                class="btn-fullscreen-close" 
+                (click)="toggleFullscreenMode()"
+                aria-label="Exit fullscreen"
+                title="Exit fullscreen"
+              >
+                ✕
+              </button>
+            }
+          </div>
+        </th>
         @for (player of players(); track player.id) {
           <th class="player-col" [class.leading]="isLeading(player)">
             <div class="player-name">{{ player.name }}</div>

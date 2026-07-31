@@ -86,22 +86,7 @@
     <!-- Scorecard -->
     @if (hasPlayers()) {
       <section class="scorecard-section">
-        <div class="scorecard-header">
-          <button 
-            type="button" 
-            class="btn btn-fullscreen" 
-            (click)="toggleFullscreen()"
-            [attr.aria-label]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
-            [title]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
-          >
-            @if (isFullscreen()) {
-              <span class="fullscreen-icon exit-icon">✕</span>
-            } @else {
-              <span class="fullscreen-icon enter-icon">⛶</span>
-            }
-          </button>
-        </div>
-        <app-scorecard />
+        <app-scorecard [isFullscreen]="isFullscreen()" (toggleFullscreen)="toggleFullscreen()" />
       </section>
 
       <!-- Actions -->
