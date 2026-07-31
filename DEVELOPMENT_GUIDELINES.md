@@ -97,11 +97,17 @@ In future iterations, the user would like to implement theme selections (e.g., d
 
 ### Fullscreen Mode
 
-When the scorecard is displayed in fullscreen mode:
-- The close button (✕) is integrated directly into the table header's "Category" column
+The scorecard includes a fullscreen toggle button in the header row:
+
+**Normal View:**
+- A fullscreen entry button (⛶) is displayed in the "Category" column header on the right side
+- Users can click this button to expand the scorecard to fullscreen mode
+
+**Fullscreen Mode:**
+- The close button (✕) replaces the fullscreen entry button in the same position
 - This maximizes viewport usage by eliminating a separate header row, allowing more scorecard rows to be visible
 - The button is positioned on the right side of the header cell, maintaining alignment with the header styling
-- Only visible when in fullscreen mode (hidden in normal view)
+- Users can click the close button to exit fullscreen mode and return to normal view
 
 ## Architecture
 
