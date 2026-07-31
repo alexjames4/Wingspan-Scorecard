@@ -8,12 +8,22 @@
             @if (isFullscreen()) {
               <button 
                 type="button" 
-                class="btn-fullscreen-close" 
+                class="btn-fullscreen btn-fullscreen-close" 
                 (click)="toggleFullscreenMode()"
                 aria-label="Exit fullscreen"
                 title="Exit fullscreen"
               >
                 ✕
+              </button>
+            } @else {
+              <button 
+                type="button" 
+                class="btn-fullscreen btn-fullscreen-open" 
+                (click)="toggleFullscreenMode()"
+                aria-label="Enter fullscreen"
+                title="Enter fullscreen"
+              >
+                ⛶
               </button>
             }
           </div>

@@ -236,8 +236,8 @@ thead .sticky-col {
   }
 }
 
-/* ── Fullscreen Close Button ─────────────────── */
-.btn-fullscreen-close {
+/* ── Fullscreen Buttons ─────────────────── */
+.btn-fullscreen {
   background: none;
   border: none;
   color: #fff;
@@ -258,4 +258,12 @@ thead .sticky-col {
   &:active {
     transform: scale(0.95);
   }
+}
+
+.btn-fullscreen-close {
+  // inherits styles from .btn-fullscreen
+}
+
+.btn-fullscreen-open {
+  // inherits styles from .btn-fullscreen
 }
